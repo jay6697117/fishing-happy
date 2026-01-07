@@ -1,0 +1,13 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "tiny-fishing-remake",
+  "description": "Tiny Fishing Remake",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  }
+}

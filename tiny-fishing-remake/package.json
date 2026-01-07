@@ -8,7 +8,8 @@
     "build": "tsc -p tsconfig.json && vite build",
     "preview": "vite preview",
     "extract:data": "node scripts/extract-game-data.mjs",
-    "build:atlas": "node scripts/build-atlas.mjs"
+    "build:atlas": "node scripts/build-atlas.mjs",
+    "build:wechat": "vite build --config vite.wechat.config.ts && node scripts/postbuild-wechat.mjs"
   },
   "dependencies": {
     "localforage": "^1.10.0",

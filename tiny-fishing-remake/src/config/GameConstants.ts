@@ -47,6 +47,12 @@ export const GAMEPLAY = {
   fishSpawnMinGap: 70
 };
 
+export const AQUARIUM_CONFIG = {
+  earningIntervalMinutes: 5,
+  claimMultiplierDefault: 1,
+  claimMultiplierBonus: 4
+};
+
 export function roundDownToFive(value: number): number {
   return value - (value % 5);
 }

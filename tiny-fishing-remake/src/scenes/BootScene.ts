@@ -3,6 +3,7 @@ import { AssetKeys } from '@/config/AssetKeys';
 import { applyOfflineEarnings } from '@/systems/OfflineEarnings';
 import { applyEnergyRegen } from '@/systems/EnergySystem';
 import { applyPrizeTimer } from '@/systems/PrizeSystem';
+import { applyAquariumOfflineProgress } from '@/systems/AquariumSystem';
 import { saveManager } from '@/systems/SaveManager';
 
 export class BootScene extends Phaser.Scene {
@@ -48,6 +49,7 @@ export class BootScene extends Phaser.Scene {
   create(): void {
     applyEnergyRegen();
     applyPrizeTimer();
+    applyAquariumOfflineProgress();
     const offlineEarnings = applyOfflineEarnings();
     void saveManager.save();
     this.scene.start('MainMenuScene', { offlineEarnings });

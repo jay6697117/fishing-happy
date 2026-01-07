@@ -7,6 +7,7 @@ import { getFirstFrame } from '@/config/SpriteFrames';
 import { getUpgradeValue } from '@/systems/UpgradeSystem';
 import { saveManager } from '@/systems/SaveManager';
 import { applyEnergyRegen, consumeEnergy, hasEnergy } from '@/systems/EnergySystem';
+import { ensureFishEarningOnCatch } from '@/systems/AquariumSystem';
 import { Fish } from '@/gameobjects/Fish';
 import { Hook } from '@/gameobjects/Hook';
 
@@ -109,17 +110,20 @@ export class GameScene extends Phaser.Scene {
     this.spawnTimer = undefined;
 
     let totalValue = 0;
+    const caughtIds = new Set(saveManager.data.caughtFishIds);
     for (const fish of this.hook.caughtFish) {
       totalValue += fish.data.price;
-      if (!saveManager.data.caughtFishIds.includes(fish.data.id)) {
-        saveManager.data.caughtFishIds.push(fish.data.id);
+      if (!caughtIds.has(fish.data.id)) {
+        caughtIds.add(fish.data.id);
       }
+      ensureFishEarningOnCatch(fish.data);
     }
 
     const coins = saveManager.data.coins + totalValue;
     saveManager.update({
       coins,
-      totalFishCaught: saveManager.data.totalFishCaught + this.hook.caughtFish.length
+      totalFishCaught: saveManager.data.totalFishCaught + this.hook.caughtFish.length,
+      caughtFishIds: Array.from(caughtIds)
     });
 
     void saveManager.save();
