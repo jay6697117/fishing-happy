@@ -2,9 +2,11 @@ import Phaser from 'phaser';
 import { AssetKeys } from '@/config/AssetKeys';
 import { PHYSICS } from '@/config/GameConstants';
 import { getRandomFishByDepth } from '@/config/FishDatabase';
+import { getHookById } from '@/config/HookDatabase';
+import { getFirstFrame } from '@/config/SpriteFrames';
 import { getUpgradeValue } from '@/systems/UpgradeSystem';
 import { saveManager } from '@/systems/SaveManager';
-import { consumeEnergy, hasEnergy } from '@/systems/EnergySystem';
+import { applyEnergyRegen, consumeEnergy, hasEnergy } from '@/systems/EnergySystem';
 import { Fish } from '@/gameobjects/Fish';
 import { Hook } from '@/gameobjects/Hook';
 
@@ -14,6 +16,7 @@ export class GameScene extends Phaser.Scene {
   private spawnTimer?: Phaser.Time.TimerEvent;
   private statusText?: Phaser.GameObjects.Text;
   private runEarnings = 0;
+  private energyTimer = 0;
 
   constructor() {
     super('GameScene');
@@ -23,11 +26,12 @@ export class GameScene extends Phaser.Scene {
     const { width, height } = this.scale;
     this.add.image(width / 2, height / 2, AssetKeys.images.background).setDisplaySize(width, height);
 
-    this.createPlaceholderTextures();
-
     this.fishGroup = this.physics.add.group();
 
-    this.hook = new Hook(this, width / 2, PHYSICS.waterSurfaceY);
+    const hookData = getHookById(saveManager.data.hookChosenId) ?? getHookById(1);
+    const hookFrame = hookData ? getFirstFrame(hookData.spriteName) : 'unknown';
+    const hookSize = hookData?.sizeY ?? 120;
+    this.hook = new Hook(this, width / 2, PHYSICS.waterSurfaceY, AssetKeys.atlases.main, hookFrame, hookSize);
     this.physics.add.existing(this.hook);
     this.hook.setImmovable(true);
 
@@ -65,6 +69,15 @@ export class GameScene extends Phaser.Scene {
     this.hook.update(deltaSeconds);
     this.updateCaughtFish();
     this.recycleOffscreenFish();
+
+    this.energyTimer += delta;
+    if (this.energyTimer >= 1000) {
+      const restored = applyEnergyRegen();
+      if (restored > 0) {
+        this.updateStatus();
+      }
+      this.energyTimer = 0;
+    }
   }
 
   private tryStartRun(): void {
@@ -123,7 +136,8 @@ export class GameScene extends Phaser.Scene {
     if (!fishData) return;
 
     const x = Phaser.Math.Between(80, this.scale.width - 80);
-    const fish = new Fish(this, x, depth, fishData);
+    const fishFrame = getFirstFrame(fishData.spriteName);
+    const fish = new Fish(this, x, depth, AssetKeys.atlases.main, fishFrame, fishData);
     this.add.existing(fish);
     this.physics.add.existing(fish);
 
@@ -173,18 +187,4 @@ export class GameScene extends Phaser.Scene {
     this.time.delayedCall(1200, () => this.updateStatus());
   }
 
-  private createPlaceholderTextures(): void {
-    if (this.textures.exists('fish-placeholder')) return;
-
-    const graphics = this.add.graphics();
-    graphics.fillStyle(0xffb300, 1);
-    graphics.fillEllipse(16, 8, 32, 16);
-    graphics.generateTexture('fish-placeholder', 32, 16);
-    graphics.clear();
-
-    graphics.fillStyle(0x0f172a, 1);
-    graphics.fillRect(0, 0, 12, 32);
-    graphics.generateTexture('hook-placeholder', 12, 32);
-    graphics.destroy();
-  }
 }

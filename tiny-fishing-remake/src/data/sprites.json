@@ -1,910 +1,1651 @@
 [
   {
     "id": 0,
-    "name": "spr_whitePoint16x16"
+    "name": "spr_whitePoint16x16",
+    "frames": [
+      284
+    ]
   },
   {
     "id": 1,
-    "name": "spr_black128x128"
+    "name": "spr_black128x128",
+    "frames": [
+      163
+    ]
   },
   {
     "id": 2,
-    "name": "spr_white128x128"
+    "name": "spr_white128x128",
+    "frames": [
+      176
+    ]
   },
   {
     "id": 3,
-    "name": "spr_blue128x128"
+    "name": "spr_blue128x128",
+    "frames": [
+      164
+    ]
   },
   {
     "id": 4,
-    "name": "spr_violet128x128"
+    "name": "spr_violet128x128",
+    "frames": [
+      175
+    ]
   },
   {
     "id": 5,
-    "name": "spr_darkblue128x128"
+    "name": "spr_darkblue128x128",
+    "frames": [
+      166
+    ]
   },
   {
     "id": 6,
-    "name": "spr_textfield"
+    "name": "spr_textfield",
+    "frames": [
+      151
+    ]
   },
   {
     "id": 7,
-    "name": "spr_fish1"
+    "name": "spr_fish1",
+    "frames": [
+      126
+    ]
   },
   {
     "id": 8,
-    "name": "spr_fish1r"
+    "name": "spr_fish1r",
+    "frames": [
+      128
+    ]
   },
   {
     "id": 9,
-    "name": "spr_fish2"
+    "name": "spr_fish2",
+    "frames": [
+      115
+    ]
   },
   {
     "id": 10,
-    "name": "spr_fish3"
+    "name": "spr_fish3",
+    "frames": [
+      123
+    ]
   },
   {
     "id": 11,
-    "name": "spr_fish1g"
+    "name": "spr_fish1g",
+    "frames": [
+      127
+    ]
   },
   {
     "id": 12,
-    "name": "spr_fish4"
+    "name": "spr_fish4",
+    "frames": [
+      110
+    ]
   },
   {
     "id": 13,
-    "name": "spr_fish5"
+    "name": "spr_fish5",
+    "frames": [
+      132
+    ]
   },
   {
     "id": 14,
-    "name": "spr_fish5l"
+    "name": "spr_fish5l",
+    "frames": [
+      134
+    ]
   },
   {
     "id": 15,
-    "name": "spr_fish5g"
+    "name": "spr_fish5g",
+    "frames": [
+      133
+    ]
   },
   {
     "id": 16,
-    "name": "spr_fish6"
+    "name": "spr_fish6",
+    "frames": [
+      89
+    ]
   },
   {
     "id": 17,
-    "name": "spr_fish6g"
+    "name": "spr_fish6g",
+    "frames": [
+      90
+    ]
   },
   {
     "id": 18,
-    "name": "spr_fish6r"
+    "name": "spr_fish6r",
+    "frames": [
+      91
+    ]
   },
   {
     "id": 19,
-    "name": "spr_fish7"
+    "name": "spr_fish7",
+    "frames": [
+      149
+    ]
   },
   {
     "id": 20,
-    "name": "spr_fish8"
+    "name": "spr_fish8",
+    "frames": [
+      156
+    ]
   },
   {
     "id": 21,
-    "name": "spr_fish9"
+    "name": "spr_fish9",
+    "frames": [
+      159
+    ]
   },
   {
     "id": 22,
-    "name": "spr_fish10"
+    "name": "spr_fish10",
+    "frames": [
+      148
+    ]
   },
   {
     "id": 23,
-    "name": "spr_fish11"
+    "name": "spr_fish11",
+    "frames": [
+      135
+    ]
   },
   {
     "id": 24,
-    "name": "spr_fish12"
+    "name": "spr_fish12",
+    "frames": [
+      141
+    ]
   },
   {
     "id": 25,
-    "name": "spr_fish13"
+    "name": "spr_fish13",
+    "frames": [
+      93
+    ]
   },
   {
     "id": 26,
-    "name": "spr_fish13g"
+    "name": "spr_fish13g",
+    "frames": [
+      94
+    ]
   },
   {
     "id": 27,
-    "name": "spr_fish14"
+    "name": "spr_fish14",
+    "frames": [
+      138
+    ]
   },
   {
     "id": 28,
-    "name": "spr_fish15"
+    "name": "spr_fish15",
+    "frames": [
+      109
+    ]
   },
   {
     "id": 29,
-    "name": "spr_fish16"
+    "name": "spr_fish16",
+    "frames": [
+      146
+    ]
   },
   {
     "id": 30,
-    "name": "spr_fish16r"
+    "name": "spr_fish16r",
+    "frames": [
+      147
+    ]
   },
   {
     "id": 31,
-    "name": "spr_fish17"
+    "name": "spr_fish17",
+    "frames": [
+      117
+    ]
   },
   {
     "id": 32,
-    "name": "spr_fish18"
+    "name": "spr_fish18",
+    "frames": [
+      53
+    ]
   },
   {
     "id": 33,
-    "name": "spr_fish19"
+    "name": "spr_fish19",
+    "frames": [
+      76
+    ]
   },
   {
     "id": 34,
-    "name": "spr_fish20"
+    "name": "spr_fish20",
+    "frames": [
+      80
+    ]
   },
   {
     "id": 35,
-    "name": "spr_fish21"
+    "name": "spr_fish21",
+    "frames": [
+      22
+    ]
   },
   {
     "id": 36,
-    "name": "spr_fish22"
+    "name": "spr_fish22",
+    "frames": [
+      79
+    ]
   },
   {
     "id": 37,
-    "name": "spr_fish23"
+    "name": "spr_fish23",
+    "frames": [
+      31
+    ]
   },
   {
     "id": 38,
-    "name": "spr_fish24"
+    "name": "spr_fish24",
+    "frames": [
+      27
+    ]
   },
   {
     "id": 39,
-    "name": "spr_fish25"
+    "name": "spr_fish25",
+    "frames": [
+      24
+    ]
   },
   {
     "id": 40,
-    "name": "spr_fish26"
+    "name": "spr_fish26",
+    "frames": [
+      111
+    ]
   },
   {
     "id": 41,
-    "name": "spr_fish29"
+    "name": "spr_fish29",
+    "frames": [
+      23
+    ]
   },
   {
     "id": 42,
-    "name": "spr_fish27"
+    "name": "spr_fish27",
+    "frames": [
+      139
+    ]
   },
   {
     "id": 43,
-    "name": "spr_fish28"
+    "name": "spr_fish28",
+    "frames": [
+      140
+    ]
   },
   {
     "id": 44,
-    "name": "spr_treasure_chest"
+    "name": "spr_treasure_chest",
+    "frames": [
+      88
+    ]
   },
   {
     "id": 45,
-    "name": "spr_shopBut"
+    "name": "spr_shopBut",
+    "frames": [
+      129
+    ]
   },
   {
     "id": 46,
-    "name": "spr_vipBut"
+    "name": "spr_vipBut",
+    "frames": [
+      130
+    ]
   },
   {
     "id": 47,
-    "name": "sprite53_Group_92"
+    "name": "sprite53_Group_92",
+    "frames": [
+      40
+    ]
   },
   {
     "id": 48,
-    "name": "spr_adIcon"
+    "name": "spr_adIcon",
+    "frames": [
+      240
+    ]
   },
   {
     "id": 49,
-    "name": "spr_butYellow"
+    "name": "spr_butYellow",
+    "frames": [
+      82
+    ]
   },
   {
     "id": 50,
-    "name": "spr_butOrange"
+    "name": "spr_butOrange",
+    "frames": [
+      75
+    ]
   },
   {
     "id": 51,
-    "name": "spr_butDark"
+    "name": "spr_butDark",
+    "frames": [
+      81
+    ]
   },
   {
     "id": 52,
-    "name": "spr_butOrangeSmall"
+    "name": "spr_butOrangeSmall",
+    "frames": [
+      124
+    ]
   },
   {
     "id": 53,
-    "name": "spr_upperMoney"
+    "name": "spr_upperMoney",
+    "frames": [
+      125
+    ]
   },
   {
     "id": 54,
-    "name": "sprite153"
+    "name": "sprite153",
+    "frames": [
+      61
+    ]
   },
   {
     "id": 55,
-    "name": "spr_pinkBut"
+    "name": "spr_pinkBut",
+    "frames": [
+      59
+    ]
   },
   {
     "id": 56,
-    "name": "spr_butDarkUnlock"
+    "name": "spr_butDarkUnlock",
+    "frames": [
+      58
+    ]
   },
   {
     "id": 57,
-    "name": "spr_greyButton"
+    "name": "spr_greyButton",
+    "frames": [
+      136
+    ]
   },
   {
     "id": 58,
-    "name": "spr_buttonDesc"
+    "name": "spr_buttonDesc",
+    "frames": [
+      227,
+      228
+    ]
   },
   {
     "id": 59,
-    "name": "spr_descAd"
+    "name": "spr_descAd",
+    "frames": [
+      278
+    ]
   },
   {
     "id": 60,
-    "name": "spr_descEn"
+    "name": "spr_descEn",
+    "frames": [
+      281
+    ]
   },
   {
     "id": 61,
-    "name": "spr_coinBg"
+    "name": "spr_coinBg",
+    "frames": [
+      185
+    ]
   },
   {
     "id": 62,
-    "name": "spr_coin"
+    "name": "spr_coin",
+    "frames": [
+      256
+    ]
   },
   {
     "id": 63,
-    "name": "spr_yellow200x200"
+    "name": "spr_yellow200x200",
+    "frames": [
+      69
+    ]
   },
   {
     "id": 64,
-    "name": "spr_settingsButton"
+    "name": "spr_settingsButton",
+    "frames": [
+      218
+    ]
   },
   {
     "id": 65,
-    "name": "spr_skinsBut"
+    "name": "spr_skinsBut",
+    "frames": [
+      220
+    ]
   },
   {
     "id": 66,
-    "name": "spr_settingsButton2"
+    "name": "spr_settingsButton2",
+    "frames": [
+      219
+    ]
   },
   {
     "id": 67,
-    "name": "spr_exitBut"
+    "name": "spr_exitBut",
+    "frames": [
+      223
+    ]
   },
   {
     "id": 68,
-    "name": "spr_blue200x200"
+    "name": "spr_blue200x200",
+    "frames": [
+      65,
+      66
+    ]
   },
   {
     "id": 69,
-    "name": "spr_yellow2200x200"
+    "name": "spr_yellow2200x200",
+    "frames": [
+      70
+    ]
   },
   {
     "id": 70,
-    "name": "spr_velvet200x200"
+    "name": "spr_velvet200x200",
+    "frames": [
+      68
+    ]
   },
   {
     "id": 71,
-    "name": "spr_upperLine"
+    "name": "spr_upperLine",
+    "frames": [
+      235
+    ]
   },
   {
     "id": 72,
-    "name": "spr_upperline2"
+    "name": "spr_upperline2",
+    "frames": [
+      250
+    ]
   },
   {
     "id": 73,
-    "name": "spr_rays"
+    "name": "spr_rays",
+    "frames": [
+      181
+    ]
   },
   {
     "id": 74,
-    "name": "spr_rays2"
+    "name": "spr_rays2",
+    "frames": [
+      182
+    ]
   },
   {
     "id": 75,
-    "name": "spr_orangeSmallFish"
+    "name": "spr_orangeSmallFish",
+    "frames": [
+      272
+    ]
   },
   {
     "id": 76,
-    "name": "spr_sbAqua"
+    "name": "spr_sbAqua",
+    "frames": [
+      229
+    ]
   },
   {
     "id": 77,
-    "name": "spr_sbPrize"
+    "name": "spr_sbPrize",
+    "frames": [
+      236
+    ]
   },
   {
     "id": 78,
-    "name": "spr_sbTournament"
+    "name": "spr_sbTournament",
+    "frames": [
+      237
+    ]
   },
   {
     "id": 79,
-    "name": "spr_sbHooks"
+    "name": "spr_sbHooks",
+    "frames": [
+      211
+    ]
   },
   {
     "id": 80,
-    "name": "spr_sbBgGold"
+    "name": "spr_sbBgGold",
+    "frames": [
+      118
+    ]
   },
   {
     "id": 81,
-    "name": "spr_sbBgWhite"
+    "name": "spr_sbBgWhite",
+    "frames": [
+      120
+    ]
   },
   {
     "id": 82,
-    "name": "spr_sbWarning"
+    "name": "spr_sbWarning",
+    "frames": [
+      270
+    ]
   },
   {
     "id": 83,
-    "name": "spr_sbVip"
+    "name": "spr_sbVip",
+    "frames": [
+      234
+    ]
   },
   {
     "id": 84,
-    "name": "spr_sbBgOrange"
+    "name": "spr_sbBgOrange",
+    "frames": [
+      119
+    ]
   },
   {
     "id": 85,
-    "name": "spr_sbX10"
+    "name": "spr_sbX10",
+    "frames": [
+      205
+    ]
   },
   {
     "id": 86,
-    "name": "spr_levBar"
+    "name": "spr_levBar",
+    "frames": [
+      266,
+      267
+    ]
   },
   {
     "id": 87,
-    "name": "spr_levUpBut"
+    "name": "spr_levUpBut",
+    "frames": [
+      157,
+      158
+    ]
   },
   {
     "id": 88,
-    "name": "spr_energyBar"
+    "name": "spr_energyBar",
+    "frames": [
+      238,
+      239
+    ]
   },
   {
     "id": 89,
-    "name": "spr_energySpark"
+    "name": "spr_energySpark",
+    "frames": [
+      283
+    ]
   },
   {
     "id": 90,
-    "name": "spr_coin3D"
+    "name": "spr_coin3D",
+    "frames": [
+      165,
+      180,
+      186,
+      196,
+      215,
+      233,
+      216,
+      197,
+      187,
+      179
+    ]
   },
   {
     "id": 91,
-    "name": "spr_coin2"
+    "name": "spr_coin2",
+    "frames": [
+      217
+    ]
   },
   {
     "id": 92,
-    "name": "spr_uiRays"
+    "name": "spr_uiRays",
+    "frames": [
+      8,
+      9
+    ]
   },
   {
     "id": 93,
-    "name": "spr_upperPlank"
+    "name": "spr_upperPlank",
+    "frames": [
+      15
+    ]
   },
   {
     "id": 94,
-    "name": "spr_upperPlankTex"
+    "name": "spr_upperPlankTex",
+    "frames": [
+      174,
+      173
+    ]
   },
   {
     "id": 95,
-    "name": "sprite73_Rectangle_67"
+    "name": "sprite73_Rectangle_67",
+    "frames": [
+      83
+    ]
   },
   {
     "id": 96,
-    "name": "sprite74_Group_135"
+    "name": "sprite74_Group_135",
+    "frames": [
+      107,
+      108
+    ]
   },
   {
     "id": 97,
-    "name": "sprite66_Group_130"
+    "name": "sprite66_Group_130",
+    "frames": [
+      84
+    ]
   },
   {
     "id": 98,
-    "name": "sprite67_Group_134"
+    "name": "sprite67_Group_134",
+    "frames": [
+      62
+    ]
   },
   {
     "id": 99,
-    "name": "sprite64_Group_118"
+    "name": "sprite64_Group_118",
+    "frames": [
+      268
+    ]
   },
   {
     "id": 100,
-    "name": "spr_levelBar"
+    "name": "spr_levelBar",
+    "frames": [
+      193,
+      206
+    ]
   },
   {
     "id": 101,
-    "name": "spr_levelIconBG"
+    "name": "spr_levelIconBG",
+    "frames": [
+      225,
+      224
+    ]
   },
   {
     "id": 102,
-    "name": "spr_upgBG"
+    "name": "spr_upgBG",
+    "frames": [
+      37,
+      36,
+      35,
+      38
+    ]
   },
   {
     "id": 103,
-    "name": "spr_upgMoney"
+    "name": "spr_upgMoney",
+    "frames": [
+      201
+    ]
   },
   {
     "id": 104,
-    "name": "spr_tfcaption"
+    "name": "spr_tfcaption",
+    "frames": [
+      14
+    ]
   },
   {
     "id": 105,
-    "name": "spr_upgDepth"
+    "name": "spr_upgDepth",
+    "frames": [
+      116
+    ]
   },
   {
     "id": 106,
-    "name": "spr_upgFishes"
+    "name": "spr_upgFishes",
+    "frames": [
+      153
+    ]
   },
   {
     "id": 107,
-    "name": "spr_upgArrow"
+    "name": "spr_upgArrow",
+    "frames": [
+      245
+    ]
   },
   {
     "id": 108,
-    "name": "spr_aquariumBut"
+    "name": "spr_aquariumBut",
+    "frames": [
+      145
+    ]
   },
   {
     "id": 109,
-    "name": "spr_energyRes"
+    "name": "spr_energyRes",
+    "frames": [
+      265
+    ]
   },
   {
     "id": 110,
-    "name": "spr_bestBG"
+    "name": "spr_bestBG",
+    "frames": [
+      188
+    ]
   },
   {
     "id": 111,
-    "name": "spr_bestIcon"
+    "name": "spr_bestIcon",
+    "frames": [
+      269
+    ]
   },
   {
     "id": 112,
-    "name": "spr_bestBG2"
+    "name": "spr_bestBG2",
+    "frames": [
+      257
+    ]
   },
   {
     "id": 113,
-    "name": "spr_playBut"
+    "name": "spr_playBut",
+    "frames": [
+      71
+    ]
   },
   {
     "id": 114,
-    "name": "spr_playButArrow"
+    "name": "spr_playButArrow",
+    "frames": [
+      276
+    ]
   },
   {
     "id": 115,
-    "name": "spr_fishStarIcon"
+    "name": "spr_fishStarIcon",
+    "frames": [
+      242,
+      243,
+      241
+    ]
   },
   {
     "id": 116,
-    "name": "sprite146_money"
+    "name": "sprite146_money",
+    "frames": [
+      221
+    ]
   },
   {
     "id": 117,
-    "name": "sprite147_ad_icon"
+    "name": "sprite147_ad_icon",
+    "frames": [
+      246
+    ]
   },
   {
     "id": 118,
-    "name": "sprite148_bgblue"
+    "name": "sprite148_bgblue",
+    "frames": [
+      41
+    ]
   },
   {
     "id": 119,
-    "name": "sprite150_flare"
+    "name": "sprite150_flare",
+    "frames": [
+      252
+    ]
   },
   {
     "id": 120,
-    "name": "sprite151_longbut_orange"
+    "name": "sprite151_longbut_orange",
+    "frames": [
+      43
+    ]
   },
   {
     "id": 121,
-    "name": "sprite152_longbutwhite"
+    "name": "sprite152_longbutwhite",
+    "frames": [
+      44
+    ]
   },
   {
     "id": 122,
-    "name": "sprite132_Group_67"
+    "name": "sprite132_Group_67",
+    "frames": [
+      49
+    ]
   },
   {
     "id": 123,
-    "name": "sprite128_Rectangle_27"
+    "name": "sprite128_Rectangle_27",
+    "frames": [
+      92
+    ]
   },
   {
     "id": 124,
-    "name": "sprite127_Group_182"
+    "name": "sprite127_Group_182",
+    "frames": [
+      13
+    ]
   },
   {
     "id": 125,
-    "name": "spr_dolPrize"
+    "name": "spr_dolPrize",
+    "frames": [
+      199
+    ]
   },
   {
     "id": 126,
-    "name": "spr_prizeCoin"
+    "name": "spr_prizeCoin",
+    "frames": [
+      230
+    ]
   },
   {
     "id": 127,
-    "name": "spr_bestPrize"
+    "name": "spr_bestPrize",
+    "frames": [
+      74,
+      73
+    ]
   },
   {
     "id": 128,
-    "name": "spr_prizeBg"
+    "name": "spr_prizeBg",
+    "frames": [
+      101,
+      100,
+      99,
+      95,
+      106,
+      105,
+      96,
+      102,
+      98,
+      97
+    ]
   },
   {
     "id": 129,
-    "name": "spr_fishKey"
+    "name": "spr_fishKey",
+    "frames": [
+      209,
+      210
+    ]
   },
   {
     "id": 130,
-    "name": "spr_prizeKeysBg"
+    "name": "spr_prizeKeysBg",
+    "frames": [
+      33
+    ]
   },
   {
     "id": 131,
-    "name": "spr_keyIcon"
+    "name": "spr_keyIcon",
+    "frames": [
+      231
+    ]
   },
   {
     "id": 132,
-    "name": "spr_checherbg"
+    "name": "spr_checherbg",
+    "frames": [
+      207,
+      208
+    ]
   },
   {
     "id": 133,
-    "name": "sprite55_Ellipse_15"
+    "name": "sprite55_Ellipse_15",
+    "frames": [
+      264
+    ]
   },
   {
     "id": 134,
-    "name": "sprite54_Polygon_2"
+    "name": "sprite54_Polygon_2",
+    "frames": [
+      271
+    ]
   },
   {
     "id": 135,
-    "name": "spr_fingerPart2"
+    "name": "spr_fingerPart2",
+    "frames": [
+      275
+    ]
   },
   {
     "id": 136,
-    "name": "spr_fingerPart1"
+    "name": "spr_fingerPart1",
+    "frames": [
+      212
+    ]
   },
   {
     "id": 137,
-    "name": "spr_finger3"
+    "name": "spr_finger3",
+    "frames": [
+      198
+    ]
   },
   {
     "id": 138,
-    "name": "spr_blackStripe"
+    "name": "spr_blackStripe",
+    "frames": [
+      131
+    ]
   },
   {
     "id": 139,
-    "name": "spr_chestui2"
+    "name": "spr_chestui2",
+    "frames": [
+      56
+    ]
   },
   {
     "id": 140,
-    "name": "spr_chestui3"
+    "name": "spr_chestui3",
+    "frames": [
+      57
+    ]
   },
   {
     "id": 141,
-    "name": "spr_violetGlow"
+    "name": "spr_violetGlow",
+    "frames": [
+      78,
+      77
+    ]
   },
   {
     "id": 142,
-    "name": "spr_chestui"
+    "name": "spr_chestui",
+    "frames": [
+      32
+    ]
   },
   {
     "id": 143,
-    "name": "spr_fishEarningIc"
+    "name": "spr_fishEarningIc",
+    "frames": [
+      247,
+      248
+    ]
   },
   {
     "id": 144,
-    "name": "spr_bgaqua"
+    "name": "spr_bgaqua",
+    "frames": [
+      290
+    ]
   },
   {
     "id": 145,
-    "name": "spr_inventory"
+    "name": "spr_inventory",
+    "frames": [
+      2
+    ]
   },
   {
     "id": 146,
-    "name": "spr_enPotion"
+    "name": "spr_enPotion",
+    "frames": [
+      183
+    ]
   },
   {
     "id": 147,
-    "name": "spr_potionEffect"
+    "name": "spr_potionEffect",
+    "frames": [
+      282
+    ]
   },
   {
     "id": 148,
-    "name": "sprite52_Group_66"
+    "name": "sprite52_Group_66",
+    "frames": [
+      255
+    ]
   },
   {
     "id": 149,
-    "name": "spr_fishes_icon"
+    "name": "spr_fishes_icon",
+    "frames": [
+      203,
+      204,
+      202
+    ]
   },
   {
     "id": 150,
-    "name": "sprite161_Path_29"
+    "name": "sprite161_Path_29",
+    "frames": [
+      154
+    ]
   },
   {
     "id": 151,
-    "name": "spr_upgradeButton"
+    "name": "spr_upgradeButton",
+    "frames": [
+      48,
+      46,
+      47
+    ]
   },
   {
     "id": 152,
-    "name": "sprite157_Rectangle_7"
+    "name": "sprite157_Rectangle_7",
+    "frames": [
+      54
+    ]
   },
   {
     "id": 153,
-    "name": "sprite158_Group_6"
+    "name": "sprite158_Group_6",
+    "frames": [
+      72
+    ]
   },
   {
     "id": 154,
-    "name": "sprite61_Group_122"
+    "name": "sprite61_Group_122",
+    "frames": [
+      226
+    ]
   },
   {
     "id": 155,
-    "name": "sprite155_Path_2"
+    "name": "sprite155_Path_2",
+    "frames": [
+      144
+    ]
   },
   {
     "id": 156,
-    "name": "sprite154"
+    "name": "sprite154",
+    "frames": [
+      177
+    ]
   },
   {
     "id": 157,
-    "name": "sprite63_Ellipse_31"
+    "name": "sprite63_Ellipse_31",
+    "frames": [
+      25
+    ]
   },
   {
     "id": 158,
-    "name": "spr_finger"
+    "name": "spr_finger",
+    "frames": [
+      222
+    ]
   },
   {
     "id": 159,
-    "name": "spr_hintBG"
+    "name": "spr_hintBG",
+    "frames": [
+      45
+    ]
   },
   {
     "id": 160,
-    "name": "spr_flag"
+    "name": "spr_flag",
+    "frames": [
+      34
+    ]
   },
   {
     "id": 161,
-    "name": "spr_popupBackground"
+    "name": "spr_popupBackground",
+    "frames": [
+      3
+    ]
   },
   {
     "id": 162,
-    "name": "spr_cloud"
+    "name": "spr_cloud",
+    "frames": [
+      137,
+      195,
+      194,
+      232
+    ]
   },
   {
     "id": 163,
-    "name": "spr_cloud2"
+    "name": "spr_cloud2",
+    "frames": [
+      104,
+      160,
+      200
+    ]
   },
   {
     "id": 164,
-    "name": "spr_starEff"
+    "name": "spr_starEff",
+    "frames": [
+      249
+    ]
   },
   {
     "id": 165,
-    "name": "spr_goldEffect"
+    "name": "spr_goldEffect",
+    "frames": [
+      214
+    ]
   },
   {
     "id": 166,
-    "name": "sprite149_dollar"
+    "name": "sprite149_dollar",
+    "frames": [
+      184
+    ]
   },
   {
     "id": 167,
-    "name": "spr_shine"
+    "name": "spr_shine",
+    "frames": [
+      273
+    ]
   },
   {
     "id": 168,
-    "name": "spr_trail"
+    "name": "spr_trail",
+    "frames": [
+      191
+    ]
   },
   {
     "id": 169,
-    "name": "spr_bubble"
+    "name": "spr_bubble",
+    "frames": [
+      274
+    ]
   },
   {
     "id": 170,
-    "name": "spr_shineEff"
+    "name": "spr_shineEff",
+    "frames": [
+      244
+    ]
   },
   {
     "id": 171,
-    "name": "spr_hook_glow"
+    "name": "spr_hook_glow",
+    "frames": [
+      30
+    ]
   },
   {
     "id": 172,
-    "name": "spr_popEffect"
+    "name": "spr_popEffect",
+    "frames": [
+      286,
+      285,
+      287
+    ]
   },
   {
     "id": 173,
-    "name": "spr_butterfly"
+    "name": "spr_butterfly",
+    "frames": [
+      258
+    ]
   },
   {
     "id": 174,
-    "name": "spr_butterfly2"
+    "name": "spr_butterfly2",
+    "frames": [
+      213
+    ]
   },
   {
     "id": 175,
-    "name": "spr_serp"
+    "name": "spr_serp",
+    "frames": [
+      259,
+      262,
+      260,
+      261
+    ]
   },
   {
     "id": 176,
-    "name": "spr_roundEffect"
+    "name": "spr_roundEffect",
+    "frames": [
+      251
+    ]
   },
   {
     "id": 177,
-    "name": "spr_effBubbleAqua"
+    "name": "spr_effBubbleAqua",
+    "frames": [
+      279
+    ]
   },
   {
     "id": 178,
-    "name": "spr_dollarEffSB"
+    "name": "spr_dollarEffSB",
+    "frames": [
+      277
+    ]
   },
   {
     "id": 179,
-    "name": "spr_effArrow"
+    "name": "spr_effArrow",
+    "frames": [
+      280
+    ]
   },
   {
     "id": 180,
-    "name": "spr_oceantex"
+    "name": "spr_oceantex",
+    "frames": [
+      170,
+      172,
+      169,
+      168,
+      171,
+      167
+    ]
   },
   {
     "id": 181,
-    "name": "spr_wave"
+    "name": "spr_wave",
+    "frames": [
+      7,
+      4
+    ]
   },
   {
     "id": 182,
-    "name": "spr_bg"
+    "name": "spr_bg",
+    "frames": [
+      291
+    ]
   },
   {
     "id": 183,
-    "name": "spr_bg1"
+    "name": "spr_bg1",
+    "frames": [
+      63
+    ]
   },
   {
     "id": 184,
-    "name": "spr_fisherman"
+    "name": "spr_fisherman",
+    "frames": [
+      16
+    ]
   },
   {
     "id": 185,
-    "name": "spr_fisherman2"
+    "name": "spr_fisherman2",
+    "frames": [
+      17
+    ]
   },
   {
     "id": 186,
-    "name": "spr_rope"
+    "name": "spr_rope",
+    "frames": [
+      263
+    ]
   },
   {
     "id": 187,
-    "name": "spr_fisherhand"
+    "name": "spr_fisherhand",
+    "frames": [
+      55
+    ]
   },
   {
     "id": 188,
-    "name": "spr_fisherhand2"
+    "name": "spr_fisherhand2",
+    "frames": [
+      52
+    ]
   },
   {
     "id": 189,
-    "name": "spr_hook1"
+    "name": "spr_hook1",
+    "frames": [
+      189
+    ]
   },
   {
     "id": 190,
-    "name": "spr_hook12"
+    "name": "spr_hook12",
+    "frames": [
+      190
+    ]
   },
   {
     "id": 191,
-    "name": "spr_hook11"
+    "name": "spr_hook11",
+    "frames": [
+      161
+    ]
   },
   {
     "id": 192,
-    "name": "spr_hook10"
+    "name": "spr_hook10",
+    "frames": [
+      192
+    ]
   },
   {
     "id": 193,
-    "name": "spr_hook8"
+    "name": "spr_hook8",
+    "frames": [
+      162
+    ]
   },
   {
     "id": 194,
-    "name": "spr_hook9"
+    "name": "spr_hook9",
+    "frames": [
+      155
+    ]
   },
   {
     "id": 195,
-    "name": "spr_hook7"
+    "name": "spr_hook7",
+    "frames": [
+      178
+    ]
   },
   {
     "id": 196,
-    "name": "spr_hook5"
+    "name": "spr_hook5",
+    "frames": [
+      112
+    ]
   },
   {
     "id": 197,
-    "name": "spr_hook6"
+    "name": "spr_hook6",
+    "frames": [
+      143
+    ]
   },
   {
     "id": 198,
-    "name": "spr_hook2"
+    "name": "spr_hook2",
+    "frames": [
+      103
+    ]
   },
   {
     "id": 199,
-    "name": "spr_hook3"
+    "name": "spr_hook3",
+    "frames": [
+      60
+    ]
   },
   {
     "id": 200,
-    "name": "spr_hook4"
+    "name": "spr_hook4",
+    "frames": [
+      85
+    ]
   },
   {
     "id": 201,
-    "name": "spr_shoreTex"
+    "name": "spr_shoreTex",
+    "frames": [
+      21
+    ]
   },
   {
     "id": 202,
-    "name": "spr_shoreFill"
+    "name": "spr_shoreFill",
+    "frames": [
+      289,
+      288
+    ]
   },
   {
     "id": 203,
-    "name": "spr_shorefade"
+    "name": "spr_shorefade",
+    "frames": [
+      51
+    ]
   },
   {
     "id": 204,
-    "name": "spr_uwbig4"
+    "name": "spr_uwbig4",
+    "frames": [
+      29
+    ]
   },
   {
     "id": 205,
-    "name": "spr_uwbig2"
+    "name": "spr_uwbig2",
+    "frames": [
+      12
+    ]
   },
   {
     "id": 206,
-    "name": "spr_uwbig3"
+    "name": "spr_uwbig3",
+    "frames": [
+      11
+    ]
   },
   {
     "id": 207,
-    "name": "spr_uwbig1"
+    "name": "spr_uwbig1",
+    "frames": [
+      18
+    ]
   },
   {
     "id": 208,
-    "name": "spr_uw9"
+    "name": "spr_uw9",
+    "frames": [
+      87
+    ]
   },
   {
     "id": 209,
-    "name": "spr_uw6"
+    "name": "spr_uw6",
+    "frames": [
+      152
+    ]
   },
   {
     "id": 210,
-    "name": "spr_uw8"
+    "name": "spr_uw8",
+    "frames": [
+      114
+    ]
   },
   {
     "id": 211,
-    "name": "spr_uw7"
+    "name": "spr_uw7",
+    "frames": [
+      28
+    ]
   },
   {
     "id": 212,
-    "name": "spr_uw5"
+    "name": "spr_uw5",
+    "frames": [
+      122
+    ]
   },
   {
     "id": 213,
-    "name": "spr_uw3"
+    "name": "spr_uw3",
+    "frames": [
+      113
+    ]
   },
   {
     "id": 214,
-    "name": "spr_uw2"
+    "name": "spr_uw2",
+    "frames": [
+      121
+    ]
   },
   {
     "id": 215,
-    "name": "spr_uw1"
+    "name": "spr_uw1",
+    "frames": [
+      39
+    ]
   },
   {
     "id": 216,
-    "name": "spr_uw4"
+    "name": "spr_uw4",
+    "frames": [
+      42
+    ]
   },
   {
     "id": 217,
-    "name": "spr_forest"
+    "name": "spr_forest",
+    "frames": [
+      10
+    ]
   },
   {
     "id": 218,
-    "name": "spr_forest2"
+    "name": "spr_forest2",
+    "frames": [
+      26
+    ]
   },
   {
     "id": 219,
-    "name": "spr_leaf"
+    "name": "spr_leaf",
+    "frames": [
+      253,
+      254
+    ]
   },
   {
     "id": 220,
-    "name": "spr_demoLock"
+    "name": "spr_demoLock",
+    "frames": [
+      150
+    ]
   },
   {
     "id": 221,
-    "name": "bh5logo"
+    "name": "bh5logo",
+    "frames": [
+      50
+    ]
   },
   {
     "id": 222,
-    "name": "spr_bh5license"
+    "name": "spr_bh5license",
+    "frames": [
+      6
+    ]
   },
   {
     "id": 223,
-    "name": "spr_bh5bg"
+    "name": "spr_bh5bg",
+    "frames": [
+      64
+    ]
   },
   {
     "id": 224,
-    "name": "spr_gameIsLocked"
+    "name": "spr_gameIsLocked",
+    "frames": [
+      142
+    ]
   },
   {
     "id": 225,
-    "name": "spr_cmBg"
+    "name": "spr_cmBg",
+    "frames": [
+      67
+    ]
   },
   {
     "id": 226,
-    "name": "spr_cmLogo"
+    "name": "spr_cmLogo",
+    "frames": [
+      20
+    ]
   }
 ]

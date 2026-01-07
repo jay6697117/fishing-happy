@@ -9,6 +9,7 @@ export interface GameSave {
   coins: number;
   gems: number;
   energy: number;
+  lastEnergyTimestamp: number;
 
   hookChosenId: number;
   unlockedHookIds: number[];
@@ -24,7 +25,16 @@ export interface GameSave {
   sfxVolume: number;
   language: string;
 
+  prizeKeys: number;
+  lastPrizeTimestamp: number;
+  bestPrize: PrizeRecord | null;
+
   lastPlayedTimestamp: number;
+}
+
+export interface PrizeRecord {
+  type: 'hook' | 'gems' | 'coins';
+  value: number;
 }
 
 const DEFAULT_SAVE: GameSave = {
@@ -35,9 +45,10 @@ const DEFAULT_SAVE: GameSave = {
   coins: 0,
   gems: 0,
   energy: ENERGY_CONFIG.defaultEnergy,
+  lastEnergyTimestamp: Date.now(),
 
-  hookChosenId: 0,
-  unlockedHookIds: [0],
+  hookChosenId: 1,
+  unlockedHookIds: [1],
 
   caughtFishIds: [],
   fishEarnings: {},
@@ -49,6 +60,10 @@ const DEFAULT_SAVE: GameSave = {
   musicVolume: 0.5,
   sfxVolume: 1.0,
   language: 'en',
+
+  prizeKeys: 0,
+  lastPrizeTimestamp: Date.now(),
+  bestPrize: null,
 
   lastPlayedTimestamp: Date.now()
 };

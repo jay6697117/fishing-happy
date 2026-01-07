@@ -1,4 +1,7 @@
 export const AssetKeys = {
+  atlases: {
+    main: 'tiny-fishing'
+  },
   images: {
     background: 'bg'
   },

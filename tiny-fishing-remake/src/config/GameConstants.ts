@@ -30,7 +30,8 @@ export const OFFLINE_CONFIG = {
 
 export const ENERGY_CONFIG = {
   defaultEnergy: 30,
-  maxEnergy: 30
+  maxEnergy: 30,
+  regenIntervalSeconds: 300
 };
 
 export const PHYSICS = {

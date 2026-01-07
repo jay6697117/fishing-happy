@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { AssetKeys } from '@/config/AssetKeys';
 import { applyOfflineEarnings } from '@/systems/OfflineEarnings';
+import { applyEnergyRegen } from '@/systems/EnergySystem';
+import { applyPrizeTimer } from '@/systems/PrizeSystem';
 import { saveManager } from '@/systems/SaveManager';
 
 export class BootScene extends Phaser.Scene {
@@ -32,6 +34,7 @@ export class BootScene extends Phaser.Scene {
     });
 
     this.load.image(AssetKeys.images.background, 'assets/raw/bg.png');
+    this.load.multiatlas(AssetKeys.atlases.main, 'assets/atlas/tiny-fishing.json', 'assets/atlas/');
 
     this.load.audio(AssetKeys.audio.musicBackground, 'assets/audio/snd_musicBackground.ogg');
     this.load.audio(AssetKeys.audio.splash1, 'assets/audio/snd_splash1.ogg');
@@ -43,6 +46,8 @@ export class BootScene extends Phaser.Scene {
   }
 
   create(): void {
+    applyEnergyRegen();
+    applyPrizeTimer();
     const offlineEarnings = applyOfflineEarnings();
     void saveManager.save();
     this.scene.start('MainMenuScene', { offlineEarnings });

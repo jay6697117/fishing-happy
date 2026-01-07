@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -p tsconfig.json && vite build",
     "preview": "vite preview",
-    "extract:data": "node scripts/extract-game-data.mjs"
+    "extract:data": "node scripts/extract-game-data.mjs",
+    "build:atlas": "node scripts/build-atlas.mjs"
   },
   "dependencies": {
     "localforage": "^1.10.0",

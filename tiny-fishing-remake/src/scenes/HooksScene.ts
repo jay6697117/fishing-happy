@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { AssetKeys } from '@/config/AssetKeys';
 import { Button } from '@/ui/Button';
-import { getAllHooks } from '@/config/HookDatabase';
+import { getAllHooks, getHookById } from '@/config/HookDatabase';
 import { saveManager } from '@/systems/SaveManager';
 
 export class HooksScene extends Phaser.Scene {
@@ -28,8 +28,8 @@ export class HooksScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     const hooks = getAllHooks();
-    const currentIndex = saveManager.data.hookChosenId;
-    const available = hooks[currentIndex] ?? hooks[0];
+    const currentHookId = saveManager.data.hookChosenId;
+    const available = getHookById(currentHookId) ?? hooks[0];
 
     this.add.text(width / 2, height / 2 - 40, `CURRENT: ${available.spriteName}`, {
       fontFamily: 'Trebuchet MS',
@@ -38,7 +38,7 @@ export class HooksScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     new Button(this, width / 2, height / 2 + 40, 'SELECT FIRST', () => {
-      saveManager.update({ hookChosenId: 0, unlockedHookIds: [0] });
+      saveManager.update({ hookChosenId: hooks[0]?.id ?? 1, unlockedHookIds: [hooks[0]?.id ?? 1] });
       void saveManager.save();
       this.refreshUI();
     });

@@ -60,11 +60,25 @@ function findArrayBeforeMarker(content, marker) {
 
 function parseSpriteList(content) {
   const spriteArrayText = findArrayAfterKey(content, '_i2:');
-  const spriteNameMatches = [...spriteArrayText.matchAll(/_92:\s*"([^"]+)"/g)];
-  return spriteNameMatches.map((match, index) => ({
-    id: index,
-    name: match[1]
-  }));
+  const raw = spriteArrayText.slice(1, -1);
+  const blocks = raw.split(/},\s*{/).map((block) => `{${block}}`);
+
+  return blocks.map((block, index) => {
+    const nameMatch = block.match(/_92:\s*"([^"]+)"/);
+    const framesMatch = block.match(/_s2:\s*\[([^\]]*)\]/);
+    const frames = framesMatch
+      ? framesMatch[1]
+          .split(',')
+          .map((value) => Number(value.trim()))
+          .filter((value) => Number.isFinite(value))
+      : [];
+
+    return {
+      id: index,
+      name: nameMatch ? nameMatch[1] : `sprite_${index}`,
+      frames
+    };
+  });
 }
 
 function parseTextureEntries(content) {

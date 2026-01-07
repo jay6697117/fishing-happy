@@ -12,10 +12,16 @@ export class Hook extends Phaser.Physics.Arcade.Image {
 
   private onSurfaceCallback: (() => void) | null = null;
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, 'hook-placeholder');
+  constructor(scene: Phaser.Scene, x: number, y: number, textureKey: string, frameName: string, sizeY: number) {
+    super(scene, x, y, textureKey, frameName);
     this.setDepth(20);
     this.setOrigin(0.5, 0);
+
+    const frame = this.scene.textures.getFrame(textureKey, frameName);
+    if (frame && sizeY > 0) {
+      const scale = sizeY / frame.height;
+      this.setScale(scale);
+    }
   }
 
   startDive(onSurface: () => void): void {
