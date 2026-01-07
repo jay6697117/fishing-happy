@@ -5,6 +5,7 @@ import { getFirstFrame } from '@/config/SpriteFrames';
 import { saveManager } from '@/systems/SaveManager';
 import { applyPrize, applyPrizeTimer, consumePrizeKey, createPrizePool, formatPrize, type PrizeItem } from '@/systems/PrizeSystem';
 import { Button } from '@/ui/Button';
+import { t } from '@/systems/Localization';
 
 export class PrizesScene extends Phaser.Scene {
   private prizePool: PrizeItem[] = [];
@@ -23,7 +24,7 @@ export class PrizesScene extends Phaser.Scene {
     applyPrizeTimer();
     void saveManager.save();
 
-    this.add.text(width / 2, 120, 'PRIZES', {
+    this.add.text(width / 2, 120, t('Win_a_prize', 'WIN A PRIZE!'), {
       fontFamily: 'Trebuchet MS',
       fontSize: '48px',
       color: '#0f172a'
@@ -35,7 +36,7 @@ export class PrizesScene extends Phaser.Scene {
       color: '#0f172a'
     }).setOrigin(0.5);
 
-    this.hintText = this.add.text(width / 2, 220, 'TAP TO OPEN', {
+    this.hintText = this.add.text(width / 2, 220, t('Prizes_tap_to_open_hint', 'TAP TO OPEN'), {
       fontFamily: 'Trebuchet MS',
       fontSize: '18px',
       color: '#0f172a'
@@ -47,7 +48,7 @@ export class PrizesScene extends Phaser.Scene {
 
     const bestPrize = saveManager.data.bestPrize;
     if (bestPrize) {
-      this.add.text(width / 2, height - 180, `BEST: ${bestPrize.type.toUpperCase()} ${bestPrize.value}`, {
+      this.add.text(width / 2, height - 180, `${t('Best_prize', 'BEST PRIZE')}: ${bestPrize.type.toUpperCase()} ${bestPrize.value}`, {
         fontFamily: 'Trebuchet MS',
         fontSize: '20px',
         color: '#0f172a'
@@ -56,7 +57,7 @@ export class PrizesScene extends Phaser.Scene {
 
     new Button(this, width / 2, height - 120, 'BACK', () => {
       this.scene.start('MainMenuScene');
-    });
+    }, { frameName: 'spr_butDark', scale: 0.65, fontSize: '18px' });
   }
 
   private renderGrid(): void {
@@ -73,7 +74,7 @@ export class PrizesScene extends Phaser.Scene {
 
         const card = this.add.container(x, y);
         const bg = this.add.image(0, 0, AssetKeys.atlases.main, bgFrame).setScale(0.6);
-        const label = this.add.text(0, 0, 'OPEN', {
+        const label = this.add.text(0, 0, t('Treasure_open', 'OPEN'), {
           fontFamily: 'Trebuchet MS',
           fontSize: '18px',
           color: '#0f172a'
@@ -137,7 +138,7 @@ export class PrizesScene extends Phaser.Scene {
     if (!this.hintText) return;
     this.hintText.setText(text);
     this.time.delayedCall(1200, () => {
-      this.hintText?.setText('TAP TO OPEN');
+      this.hintText?.setText(t('Prizes_tap_to_open_hint', 'TAP TO OPEN'));
     });
   }
 }

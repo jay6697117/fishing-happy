@@ -24,6 +24,7 @@ export interface GameSave {
   musicVolume: number;
   sfxVolume: number;
   language: string;
+  vipActive: boolean;
 
   prizeKeys: number;
   lastPrizeTimestamp: number;
@@ -59,7 +60,8 @@ const DEFAULT_SAVE: GameSave = {
 
   musicVolume: 0.5,
   sfxVolume: 1.0,
-  language: 'en',
+  language: 'EN',
+  vipActive: false,
 
   prizeKeys: 0,
   lastPrizeTimestamp: Date.now(),
@@ -93,6 +95,7 @@ class SaveManager {
       const saved = await localforage.getItem<GameSave>(this.saveKey);
       if (saved) {
         this.currentSave = { ...DEFAULT_SAVE, ...saved };
+        this.currentSave.language = normalizeLanguage(this.currentSave.language);
       }
     } catch (error) {
       console.error('Failed to load save:', error);
@@ -133,3 +136,9 @@ class SaveManager {
 }
 
 export const saveManager = SaveManager.getInstance();
+
+function normalizeLanguage(value?: string): string {
+  if (!value) return 'EN';
+  const normalized = value.trim().toUpperCase();
+  return normalized.length > 0 ? normalized : 'EN';
+}

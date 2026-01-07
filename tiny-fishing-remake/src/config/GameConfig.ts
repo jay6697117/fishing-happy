@@ -8,6 +8,7 @@ import { PrizesScene } from '@/scenes/PrizesScene';
 import { HooksScene } from '@/scenes/HooksScene';
 import { SettingsScene } from '@/scenes/SettingsScene';
 import { EnergyScene } from '@/scenes/EnergyScene';
+import { VipScene } from '@/scenes/VipScene';
 import { GAMEPLAY } from '@/config/GameConstants';
 
 export const gameConfig: Phaser.Types.Core.GameConfig = {
@@ -50,6 +51,7 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
     PrizesScene,
     HooksScene,
     SettingsScene,
-    EnergyScene
+    EnergyScene,
+    VipScene
   ]
 };

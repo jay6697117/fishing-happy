@@ -5,6 +5,7 @@ import { applyEnergyRegen } from '@/systems/EnergySystem';
 import { applyPrizeTimer } from '@/systems/PrizeSystem';
 import { applyAquariumOfflineProgress } from '@/systems/AquariumSystem';
 import { saveManager } from '@/systems/SaveManager';
+import { initializeLocalization } from '@/systems/Localization';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -44,9 +45,14 @@ export class BootScene extends Phaser.Scene {
     this.load.audio(AssetKeys.audio.fishReel, 'assets/audio/snd_fishReel.ogg');
     this.load.audio(AssetKeys.audio.coinAdded, 'assets/audio/snd_coinAdded.ogg');
     this.load.audio(AssetKeys.audio.upgrade, 'assets/audio/snd_upgradeSnd.ogg');
+    this.load.text('trads', 'assets/trads.csv');
   }
 
   create(): void {
+    const csv = this.cache.text.get('trads');
+    if (csv) {
+      initializeLocalization(csv, saveManager.data.language);
+    }
     applyEnergyRegen();
     applyPrizeTimer();
     applyAquariumOfflineProgress();

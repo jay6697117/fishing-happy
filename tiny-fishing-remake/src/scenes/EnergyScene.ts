@@ -4,6 +4,7 @@ import { ENERGY_CONFIG } from '@/config/GameConstants';
 import { applyEnergyRegen, restoreEnergy } from '@/systems/EnergySystem';
 import { saveManager } from '@/systems/SaveManager';
 import { Button } from '@/ui/Button';
+import { t } from '@/systems/Localization';
 
 const POTION_COST_GEMS = 50;
 
@@ -21,7 +22,7 @@ export class EnergyScene extends Phaser.Scene {
     void saveManager.save();
     this.add.image(width / 2, height / 2, AssetKeys.images.background).setDisplaySize(width, height);
 
-    this.add.text(width / 2, 140, 'ENERGY', {
+    this.add.text(width / 2, 140, t('Energy', 'ENERGY'), {
       fontFamily: 'Trebuchet MS',
       fontSize: '48px',
       color: '#0f172a'
@@ -39,13 +40,13 @@ export class EnergyScene extends Phaser.Scene {
       color: '#0f172a'
     }).setOrigin(0.5);
 
-    new Button(this, width / 2, height / 2 + 80, 'BUY POTION', () => {
+    new Button(this, width / 2, height / 2 + 80, t('Buy', 'BUY'), () => {
       this.tryBuyPotion();
-    });
+    }, { frameName: 'spr_butOrange', scale: 0.7, fontSize: '20px' });
 
     new Button(this, width / 2, height - 120, 'BACK', () => {
       this.scene.start('MainMenuScene');
-    });
+    }, { frameName: 'spr_butDark', scale: 0.65, fontSize: '18px' });
 
     this.refreshUI();
   }
@@ -66,14 +67,16 @@ export class EnergyScene extends Phaser.Scene {
   private refreshUI(): void {
     const save = saveManager.data;
     this.infoText?.setText(`ENERGY: ${save.energy}/${ENERGY_CONFIG.maxEnergy} | GEMS: ${save.gems}`);
-    this.hintText?.setText(`COST: ${POTION_COST_GEMS} GEMS`);
+    const hint = t('Buy_energy_potion_to_restore', 'BUY ENERGY POTION#TO RESTORE ENERGY').replace(/\n/g, ' ');
+    this.hintText?.setText(`${hint} | ${t('Price', 'PRICE')}: ${POTION_COST_GEMS} GEMS`);
   }
 
   private flashHint(text: string): void {
     if (!this.hintText) return;
     this.hintText.setText(text);
     this.time.delayedCall(1200, () => {
-      this.hintText?.setText(`COST: ${POTION_COST_GEMS} GEMS`);
+      const hint = t('Buy_energy_potion_to_restore', 'BUY ENERGY POTION#TO RESTORE ENERGY').replace(/\n/g, ' ');
+      this.hintText?.setText(`${hint} | ${t('Price', 'PRICE')}: ${POTION_COST_GEMS} GEMS`);
     });
   }
 }

@@ -10,6 +10,7 @@ import { applyEnergyRegen, consumeEnergy, hasEnergy } from '@/systems/EnergySyst
 import { ensureFishEarningOnCatch } from '@/systems/AquariumSystem';
 import { Fish } from '@/gameobjects/Fish';
 import { Hook } from '@/gameobjects/Hook';
+import { t } from '@/systems/Localization';
 
 export class GameScene extends Phaser.Scene {
   private hook!: Hook;
@@ -84,7 +85,7 @@ export class GameScene extends Phaser.Scene {
   private tryStartRun(): void {
     if (this.hook.state !== 'idle') return;
     if (!hasEnergy()) {
-      this.flashStatus('NOT ENOUGH ENERGY');
+      this.flashStatus(t('Energy_warning', 'NOT ENOUGH ENERGY!'));
       return;
     }
 

@@ -4,6 +4,9 @@ import { Button } from '@/ui/Button';
 import { applyEnergyRegen } from '@/systems/EnergySystem';
 import { applyPrizeTimer } from '@/systems/PrizeSystem';
 import { saveManager } from '@/systems/SaveManager';
+import { getFirstFrame } from '@/config/SpriteFrames';
+import { t } from '@/systems/Localization';
+import { FEATURE_FLAGS } from '@/config/FeatureFlags';
 
 interface MainMenuData {
   offlineEarnings?: number;
@@ -22,14 +25,11 @@ export class MainMenuScene extends Phaser.Scene {
 
     this.add.image(width / 2, height / 2, AssetKeys.images.background).setDisplaySize(width, height);
 
-    this.add.text(width / 2, 140, 'TINY FISHING', {
-      fontFamily: 'Trebuchet MS',
-      fontSize: '56px',
-      color: '#0f172a'
-    }).setOrigin(0.5);
+    const titleFrame = getFirstFrame('spr_tfcaption');
+    this.add.image(width / 2, 150, AssetKeys.atlases.main, titleFrame).setScale(0.9);
 
     if (data.offlineEarnings && data.offlineEarnings > 0) {
-      this.add.text(width / 2, 220, `OFFLINE +$${data.offlineEarnings}`, {
+      this.add.text(width / 2, 230, `${t('Earned_offline', 'EARNED OFFLINE')} +$${data.offlineEarnings}`, {
         fontFamily: 'Trebuchet MS',
         fontSize: '24px',
         color: '#0f172a'
@@ -37,13 +37,13 @@ export class MainMenuScene extends Phaser.Scene {
     }
 
     const buttons = [
-      { label: 'PLAY', target: 'GameScene' },
-      { label: 'SHOP', target: 'ShopScene' },
-      { label: 'HOOKS', target: 'HooksScene' },
-      { label: 'AQUARIUM', target: 'AquariumScene' },
-      { label: 'PRIZES', target: 'PrizesScene' },
-      { label: 'ENERGY', target: 'EnergyScene' },
-      { label: 'SETTINGS', target: 'SettingsScene' }
+      { label: t('Play', 'PLAY'), target: 'GameScene', frameName: 'spr_butOrange' },
+      { label: 'SHOP', target: 'ShopScene', frameName: 'spr_butDark' },
+      { label: t('Hooks', 'HOOKS'), target: 'HooksScene', frameName: 'spr_butDark' },
+      { label: t('Aquarium', 'AQUARIUM'), target: 'AquariumScene', frameName: 'spr_butDark' },
+      { label: 'PRIZES', target: 'PrizesScene', frameName: 'spr_butDark' },
+      { label: t('Energy', 'ENERGY'), target: 'EnergyScene', frameName: 'spr_butDark' },
+      { label: t('Settings', 'SETTINGS'), target: 'SettingsScene', frameName: 'spr_butDark' }
     ];
 
     const startY = height / 2 - 210;
@@ -51,8 +51,14 @@ export class MainMenuScene extends Phaser.Scene {
     buttons.forEach((button, index) => {
       new Button(this, width / 2, startY + gap * index, button.label, () => {
         this.scene.start(button.target);
-      });
+      }, { frameName: button.frameName, scale: 0.75 });
     });
+
+    if (FEATURE_FLAGS.enableVip) {
+      new Button(this, width / 2, startY + gap * buttons.length, t('Become_VIP', 'BECOME VIP'), () => {
+        this.scene.start('VipScene');
+      }, { frameName: 'spr_butOrange', scale: 0.7, fontSize: '20px' });
+    }
 
     const coins = saveManager.data.coins;
     const energy = saveManager.data.energy;

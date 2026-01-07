@@ -1,3 +1,5 @@
+import { FEATURE_FLAGS } from '@/config/FeatureFlags';
+
 export interface RewardAdResult {
   completed: boolean;
   message: string;
@@ -11,6 +13,16 @@ export interface RewardAdService {
 declare const wx: any;
 
 type AdCloseResult = { isEnded?: boolean } | undefined;
+
+class DisabledRewardAdService implements RewardAdService {
+  isAvailable(): boolean {
+    return false;
+  }
+
+  async showRewardedAd(): Promise<RewardAdResult> {
+    return { completed: false, message: 'AD DISABLED' };
+  }
+}
 
 class WebRewardAdService implements RewardAdService {
   isAvailable(): boolean {
@@ -107,6 +119,9 @@ class WeChatRewardAdService implements RewardAdService {
 }
 
 export function createRewardAdService(): RewardAdService {
+  if (!FEATURE_FLAGS.enableRewardAds) {
+    return new DisabledRewardAdService();
+  }
   const adUnitId = import.meta.env.VITE_WECHAT_REWARD_AD_UNIT_ID || '';
   if (typeof wx !== 'undefined' && typeof wx.createRewardedVideoAd === 'function') {
     return new WeChatRewardAdService(adUnitId);

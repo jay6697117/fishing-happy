@@ -12,6 +12,7 @@ import {
 import { saveManager } from '@/systems/SaveManager';
 import { createRewardAdService, type RewardAdService } from '@/systems/RewardAdService';
 import { SpriteButton } from '@/ui/SpriteButton';
+import { t } from '@/systems/Localization';
 
 interface FishRow {
   fishId: number;
@@ -88,7 +89,7 @@ export class AquariumScene extends Phaser.Scene {
 
     this.rewardAdService = createRewardAdService();
 
-    this.add.text(width / 2, 110, 'AQUARIUM', {
+    this.add.text(width / 2, 110, t('Aquarium', 'AQUARIUM'), {
       fontFamily: 'Trebuchet MS',
       fontSize: '52px',
       color: '#0f172a'
@@ -136,7 +137,7 @@ export class AquariumScene extends Phaser.Scene {
       claimY,
       AssetKeys.atlases.main,
       getFirstFrame('spr_aquariumBut'),
-      'CLAIM',
+      t('Claim', 'CLAIM'),
       () => this.claimAll(AQUARIUM_CONFIG.claimMultiplierDefault),
       { scale: buttonScale, fontSize: '20px', textColor: '#0f172a' }
     );
@@ -147,7 +148,7 @@ export class AquariumScene extends Phaser.Scene {
       claimY,
       AssetKeys.atlases.main,
       getFirstFrame('spr_aquariumBut'),
-      'CLAIM x4',
+      `${t('Claim_all_x', 'CLAIM ALL x')}4`,
       () => void this.claimWithAd(),
       { scale: buttonScale, fontSize: '20px', textColor: '#0f172a' }
     );
