@@ -44,7 +44,9 @@ export const PHYSICS = {
 
 export const GAMEPLAY = {
   maxPointerCount: 3,
-  fishSpawnMinGap: 70
+  fishSpawnMinGap: 90,
+  fishSpawnIntervalMs: 600,
+  treasureSpawnChance: 0.03
 };
 
 export const AQUARIUM_CONFIG = {

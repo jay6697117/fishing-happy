@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { AssetKeys } from '@/config/AssetKeys';
-import { PHYSICS } from '@/config/GameConstants';
-import { getRandomFishByDepth } from '@/config/FishDatabase';
+import { GAMEPLAY, PHYSICS } from '@/config/GameConstants';
+import { getRandomFishByDepth, getRandomTreasureByDepth } from '@/config/FishDatabase';
 import { getHookById } from '@/config/HookDatabase';
 import { getFirstFrame } from '@/config/SpriteFrames';
 import { getUpgradeValue } from '@/systems/UpgradeSystem';
@@ -11,6 +11,7 @@ import { ensureFishEarningOnCatch } from '@/systems/AquariumSystem';
 import { Fish } from '@/gameobjects/Fish';
 import { Hook } from '@/gameobjects/Hook';
 import { t } from '@/systems/Localization';
+import type { ScoreSceneData } from '@/scenes/ScoreScene';
 
 export class GameScene extends Phaser.Scene {
   private hook!: Hook;
@@ -19,6 +20,7 @@ export class GameScene extends Phaser.Scene {
   private statusText?: Phaser.GameObjects.Text;
   private runEarnings = 0;
   private energyTimer = 0;
+  private treasureCaught = false;
 
   constructor() {
     super('GameScene');
@@ -58,6 +60,9 @@ export class GameScene extends Phaser.Scene {
       target.setVelocity(0, 0);
       target.setDepth(15);
       this.hook.attachFish(target);
+      if (target.data.type === 2 || target.data.type === 3) {
+        this.showRarityBanner(target.data.type);
+      }
       if (this.hook.caughtFish.length >= this.hook.maxFishes) {
         this.hook.startRise();
       }
@@ -91,6 +96,7 @@ export class GameScene extends Phaser.Scene {
 
     consumeEnergy();
     this.runEarnings = 0;
+    this.treasureCaught = false;
     this.hook.maxFishes = getUpgradeValue('maxFishes');
     const maxDepthUnits = getUpgradeValue('maxDepth');
     this.hook.maxDepthY = PHYSICS.waterSurfaceY + maxDepthUnits * PHYSICS.depthUnitPixels;
@@ -98,7 +104,7 @@ export class GameScene extends Phaser.Scene {
     this.hook.startDive(() => this.onRunFinished());
     this.spawnTimer?.remove(false);
     this.spawnTimer = this.time.addEvent({
-      delay: 600,
+      delay: GAMEPLAY.fishSpawnIntervalMs,
       loop: true,
       callback: () => this.spawnFish()
     });
@@ -112,7 +118,12 @@ export class GameScene extends Phaser.Scene {
 
     let totalValue = 0;
     const caughtIds = new Set(saveManager.data.caughtFishIds);
+    const caughtCount = this.hook.caughtFish.length;
     for (const fish of this.hook.caughtFish) {
+      if (fish.data.type === 4) {
+        this.treasureCaught = true;
+        continue;
+      }
       totalValue += fish.data.price;
       if (!caughtIds.has(fish.data.id)) {
         caughtIds.add(fish.data.id);
@@ -120,24 +131,41 @@ export class GameScene extends Phaser.Scene {
       ensureFishEarningOnCatch(fish.data);
     }
 
-    const coins = saveManager.data.coins + totalValue;
+    const previousBest = saveManager.data.bestScore;
+    const newBest = Math.max(previousBest, totalValue);
     saveManager.update({
-      coins,
-      totalFishCaught: saveManager.data.totalFishCaught + this.hook.caughtFish.length,
-      caughtFishIds: Array.from(caughtIds)
+      totalFishCaught: saveManager.data.totalFishCaught + caughtCount,
+      caughtFishIds: Array.from(caughtIds),
+      bestScore: newBest
     });
-
     void saveManager.save();
+
     this.runEarnings = totalValue;
     this.clearCaughtFish();
     this.updateStatus();
+
+    const payload: ScoreSceneData = {
+      earnedCoins: totalValue,
+      caughtCount,
+      isNewRecord: totalValue > previousBest
+    };
+
+    if (this.treasureCaught) {
+      this.scene.start('ChestScene', payload);
+    } else {
+      this.scene.start('ScoreScene', payload);
+    }
   }
 
   private spawnFish(): void {
     if (this.hook.state !== 'diving') return;
 
     const depth = this.hook.y + Phaser.Math.Between(120, 420);
-    const fishData = getRandomFishByDepth(depth);
+    if (!this.canSpawnAtDepth(depth)) return;
+
+    const treasureRoll = Math.random();
+    const treasure = treasureRoll < GAMEPLAY.treasureSpawnChance ? getRandomTreasureByDepth(depth) : null;
+    const fishData = treasure ?? getRandomFishByDepth(depth);
     if (!fishData) return;
 
     const x = Phaser.Math.Between(80, this.scale.width - 80);
@@ -173,6 +201,19 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
+  private canSpawnAtDepth(depth: number): boolean {
+    let canSpawn = true;
+    const minGap = GAMEPLAY.fishSpawnMinGap;
+    this.fishGroup.children.each((child) => {
+      const fish = child as Fish;
+      if (fish.caught) return;
+      if (Math.abs(fish.y - depth) < minGap) {
+        canSpawn = false;
+      }
+    });
+    return canSpawn;
+  }
+
   private clearCaughtFish(): void {
     this.hook.caughtFish.forEach((fish) => fish.destroy());
     this.hook.caughtFish.length = 0;
@@ -190,6 +231,30 @@ export class GameScene extends Phaser.Scene {
     if (!this.statusText) return;
     this.statusText.setText(message);
     this.time.delayedCall(1200, () => this.updateStatus());
+  }
+
+  private showRarityBanner(type: number): void {
+    const { width } = this.scale;
+    const text = type === 3 ? t('Fish_legendary', 'LEGENDARY!') : t('Fish_rare', 'RARE!');
+    const banner = this.add.container(width / 2, 220);
+    const bg = this.add.image(0, 0, AssetKeys.atlases.main, getFirstFrame('spr_popupBackground')).setScale(0.45);
+    const label = this.add.text(0, 0, text, {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '22px',
+      color: '#0f172a'
+    }).setOrigin(0.5);
+    banner.add([bg, label]);
+    banner.setAlpha(0);
+
+    this.tweens.add({
+      targets: banner,
+      alpha: 1,
+      y: 200,
+      duration: 180,
+      yoyo: true,
+      hold: 600,
+      onComplete: () => banner.destroy()
+    });
   }
 
 }

@@ -22,7 +22,7 @@ export class EnergyScene extends Phaser.Scene {
     void saveManager.save();
     this.add.image(width / 2, height / 2, AssetKeys.images.background).setDisplaySize(width, height);
 
-    this.add.text(width / 2, 140, t('Energy', 'ENERGY'), {
+    this.add.text(width / 2, 140, t('Do_smth_for_energy', 'ENERGY'), {
       fontFamily: 'Trebuchet MS',
       fontSize: '48px',
       color: '#0f172a'

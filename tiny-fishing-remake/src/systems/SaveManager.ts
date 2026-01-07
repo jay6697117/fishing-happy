@@ -126,7 +126,7 @@ class SaveManager {
     const minutesOffline = Math.floor((now - lastPlayed) / 60000);
     const cappedMinutes = Math.min(minutesOffline, OFFLINE_CONFIG.maxMinutes);
     const earningsPerMinute = UPGRADE_CONFIG.earnings.getValue(this.currentSave.earningPerMinLevel);
-    return Math.floor(cappedMinutes * earningsPerMinute);
+    return Math.round(cappedMinutes * earningsPerMinute);
   }
 
   async reset(): Promise<void> {

@@ -41,6 +41,15 @@ export function getRandomFishByDepth(depthPixels: number): FishData | null {
   return candidates[0];
 }
 
+export function getRandomTreasureByDepth(depthPixels: number): FishData | null {
+  const depthUnits = depthPixels / PHYSICS.depthUnitPixels;
+  const candidates = FISH_DATABASE
+    .filter((fish) => fish.type === 4)
+    .filter((fish) => depthUnits >= fish.minDepth && depthUnits <= fish.maxDepth);
+  if (candidates.length === 0) return null;
+  return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
 export function getFishById(id: number): FishData | undefined {
   return FISH_DATABASE.find((fish) => fish.id === id);
 }

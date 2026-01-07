@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { AssetKeys } from '@/config/AssetKeys';
+import { getFirstFrame, getFrames } from '@/config/SpriteFrames';
 import { Button } from '@/ui/Button';
 import { getUpgradeCost, getUpgradeLevel, getUpgradeValue, purchaseUpgrade, type UpgradeKey } from '@/systems/UpgradeSystem';
 import { saveManager } from '@/systems/SaveManager';
@@ -19,6 +20,7 @@ const UPGRADE_ROWS: UpgradeRow[] = [
 export class ShopScene extends Phaser.Scene {
   private coinText?: Phaser.GameObjects.Text;
   private valueTexts: Phaser.GameObjects.Text[] = [];
+  private priceTexts: Phaser.GameObjects.Text[] = [];
 
   constructor() {
     super('ShopScene');
@@ -40,30 +42,48 @@ export class ShopScene extends Phaser.Scene {
       color: '#0f172a'
     }).setOrigin(0.5);
 
-    const startY = 280;
-    const gap = 140;
+    const startY = 320;
+    const gap = 280;
+    const bgFrames = getFrames('spr_upgBG');
+    const iconMap: Record<UpgradeKey, string> = {
+      maxFishes: 'spr_upgFishes',
+      maxDepth: 'spr_upgDepth',
+      earnings: 'spr_upgMoney'
+    };
 
     UPGRADE_ROWS.forEach((row, index) => {
       const y = startY + index * gap;
-      this.add.text(width / 2, y - 30, t(row.label, row.label), {
-        fontFamily: 'Trebuchet MS',
-        fontSize: '24px',
-        color: '#0f172a'
-      }).setOrigin(0.5);
+      const bgFrame = bgFrames[index % bgFrames.length] ?? getFirstFrame('spr_upgBG');
+      this.add.image(width / 2, y, AssetKeys.atlases.main, bgFrame).setScale(0.78);
 
-      const valueText = this.add.text(width / 2, y, '', {
+      this.add.text(width / 2, y - bg.displayHeight / 2 + 32, t(row.label, row.label), {
         fontFamily: 'Trebuchet MS',
         fontSize: '20px',
         color: '#0f172a'
       }).setOrigin(0.5);
+
+      this.add.image(width / 2, y - 40, AssetKeys.atlases.main, getFirstFrame(iconMap[row.key])).setScale(0.8);
+
+      const valueText = this.add.text(width / 2, y + 20, '', {
+        fontFamily: 'Trebuchet MS',
+        fontSize: '18px',
+        color: '#0f172a'
+      }).setOrigin(0.5);
       this.valueTexts.push(valueText);
 
-      new Button(this, width / 2, y + 50, t('Buy', 'BUY'), () => {
+      const priceText = this.add.text(width / 2, y + 52, '', {
+        fontFamily: 'Trebuchet MS',
+        fontSize: '18px',
+        color: '#0f172a'
+      }).setOrigin(0.5);
+      this.priceTexts.push(priceText);
+
+      new Button(this, width / 2, y + 110, t('Buy', 'BUY'), () => {
         if (purchaseUpgrade(row.key)) {
           void saveManager.save();
           this.refreshUI();
         }
-      }, { frameName: 'spr_butOrange', scale: 0.7, fontSize: '20px' });
+      }, { frameName: 'spr_butOrangeSmall', scale: 0.6, fontSize: '18px' });
     });
 
     new Button(this, width / 2, height - 120, 'BACK', () => {
@@ -81,7 +101,8 @@ export class ShopScene extends Phaser.Scene {
       const level = getUpgradeLevel(row.key);
       const value = getUpgradeValue(row.key);
       const cost = getUpgradeCost(row.key);
-      this.valueTexts[index]?.setText(`LV ${level} | VALUE ${Math.floor(value)} | ${t('Price', 'PRICE')} $${Math.floor(cost)}`);
+      this.valueTexts[index]?.setText(`LV ${level} | VALUE ${Math.floor(value)}`);
+      this.priceTexts[index]?.setText(`${t('Price', 'PRICE')} $${Math.floor(cost)}`);
     });
   }
 }
