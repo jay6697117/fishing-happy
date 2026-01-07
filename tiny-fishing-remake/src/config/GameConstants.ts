@@ -35,10 +35,10 @@ export const ENERGY_CONFIG = {
 };
 
 export const PHYSICS = {
-  hookSinkSpeed: 360,
-  hookRiseSpeed: 520,
+  hookSinkSpeed: 880,
+  hookRiseSpeed: 880,
   hookMoveSpeed: 220,
-  depthUnitPixels: 100,
+  depthUnitPixels: 1100,
   waterSurfaceY: 280
 };
 

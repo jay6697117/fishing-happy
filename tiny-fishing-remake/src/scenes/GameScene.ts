@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 import { AssetKeys } from '@/config/AssetKeys';
-import { GAMEPLAY, PHYSICS } from '@/config/GameConstants';
+import { ENERGY_CONFIG, GAMEPLAY, PHYSICS } from '@/config/GameConstants';
 import { getRandomFishByDepth, getRandomTreasureByDepth } from '@/config/FishDatabase';
 import { getHookById } from '@/config/HookDatabase';
-import { getFirstFrame } from '@/config/SpriteFrames';
+import { getFirstFrame, getFrames } from '@/config/SpriteFrames';
 import { getUpgradeValue } from '@/systems/UpgradeSystem';
 import { saveManager } from '@/systems/SaveManager';
 import { applyEnergyRegen, consumeEnergy, hasEnergy } from '@/systems/EnergySystem';
@@ -18,9 +18,18 @@ export class GameScene extends Phaser.Scene {
   private fishGroup!: Phaser.Physics.Arcade.Group;
   private spawnTimer?: Phaser.Time.TimerEvent;
   private statusText?: Phaser.GameObjects.Text;
-  private runEarnings = 0;
   private energyTimer = 0;
   private treasureCaught = false;
+  private worldHeight = 0;
+  private wave?: Phaser.GameObjects.TileSprite;
+  private rope?: Phaser.GameObjects.Image;
+  private coinText?: Phaser.GameObjects.Text;
+  private depthText?: Phaser.GameObjects.Text;
+  private energyFill?: Phaser.GameObjects.Image;
+  private energyMask?: Phaser.GameObjects.Graphics;
+  private energySpark?: Phaser.GameObjects.Image;
+  private depthFill?: Phaser.GameObjects.Image;
+  private depthMask?: Phaser.GameObjects.Graphics;
 
   constructor() {
     super('GameScene');
@@ -28,9 +37,20 @@ export class GameScene extends Phaser.Scene {
 
   create(): void {
     const { width, height } = this.scale;
-    this.add.image(width / 2, height / 2, AssetKeys.images.background).setDisplaySize(width, height);
+    const maxDepthUnits = Math.max(3, getUpgradeValue('maxDepth'));
+    const maxDepthY = PHYSICS.waterSurfaceY + maxDepthUnits * PHYSICS.depthUnitPixels;
+    this.worldHeight = maxDepthY + height * 0.6;
+
+    this.add.image(width / 2, this.worldHeight / 2, AssetKeys.images.background).setDisplaySize(width, this.worldHeight);
+    this.physics.world.setBounds(0, 0, width, this.worldHeight);
+    this.cameras.main.setBounds(0, 0, width, this.worldHeight);
 
     this.fishGroup = this.physics.add.group();
+
+    const waveFrame = getFirstFrame('spr_wave');
+    this.wave = this.add
+      .tileSprite(width / 2, PHYSICS.waterSurfaceY + 60, width, 160, AssetKeys.atlases.main, waveFrame)
+      .setDepth(4);
 
     const hookData = getHookById(saveManager.data.hookChosenId) ?? getHookById(1);
     const hookFrame = hookData ? getFirstFrame(hookData.spriteName) : 'unknown';
@@ -39,11 +59,17 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.existing(this.hook);
     this.hook.setImmovable(true);
 
+    this.rope = this.add
+      .image(this.hook.x, PHYSICS.waterSurfaceY, AssetKeys.atlases.main, getFirstFrame('spr_rope'))
+      .setOrigin(0.5, 0)
+      .setAngle(90)
+      .setDepth(12);
+
     this.statusText = this.add.text(width / 2, 80, '', {
       fontFamily: 'Trebuchet MS',
       fontSize: '22px',
       color: '#0f172a'
-    }).setOrigin(0.5);
+    }).setOrigin(0.5).setScrollFactor(0);
 
     this.input.on('pointerdown', () => this.tryStartRun());
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
@@ -68,6 +94,7 @@ export class GameScene extends Phaser.Scene {
       }
     });
 
+    this.createHud();
     this.updateStatus();
   }
 
@@ -76,6 +103,9 @@ export class GameScene extends Phaser.Scene {
     this.hook.update(deltaSeconds);
     this.updateCaughtFish();
     this.recycleOffscreenFish();
+    this.updateCamera();
+    this.updateRope();
+    this.updateHud();
 
     this.energyTimer += delta;
     if (this.energyTimer >= 1000) {
@@ -95,7 +125,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     consumeEnergy();
-    this.runEarnings = 0;
     this.treasureCaught = false;
     this.hook.maxFishes = getUpgradeValue('maxFishes');
     const maxDepthUnits = getUpgradeValue('maxDepth');
@@ -140,7 +169,6 @@ export class GameScene extends Phaser.Scene {
     });
     void saveManager.save();
 
-    this.runEarnings = totalValue;
     this.clearCaughtFish();
     this.updateStatus();
 
@@ -192,10 +220,11 @@ export class GameScene extends Phaser.Scene {
   private recycleOffscreenFish(): void {
     const leftBound = -120;
     const rightBound = this.scale.width + 120;
+    const topBound = this.cameras.main.scrollY - 400;
     this.fishGroup.children.each((child) => {
       const fish = child as Fish;
       if (fish.caught) return;
-      if (fish.x < leftBound || fish.x > rightBound) {
+      if (fish.x < leftBound || fish.x > rightBound || fish.y < topBound) {
         fish.destroy();
       }
     });
@@ -221,10 +250,7 @@ export class GameScene extends Phaser.Scene {
 
   private updateStatus(): void {
     if (!this.statusText) return;
-    const energy = saveManager.data.energy;
-    const coins = saveManager.data.coins;
-    const lastEarnings = this.runEarnings > 0 ? ` | LAST +$${this.runEarnings}` : '';
-    this.statusText.setText(`ENERGY: ${energy} | COINS: $${coins}${lastEarnings}`);
+    this.statusText.setText('');
   }
 
   private flashStatus(message: string): void {
@@ -236,7 +262,7 @@ export class GameScene extends Phaser.Scene {
   private showRarityBanner(type: number): void {
     const { width } = this.scale;
     const text = type === 3 ? t('Fish_legendary', 'LEGENDARY!') : t('Fish_rare', 'RARE!');
-    const banner = this.add.container(width / 2, 220);
+    const banner = this.add.container(width / 2, 220).setScrollFactor(0);
     const bg = this.add.image(0, 0, AssetKeys.atlases.main, getFirstFrame('spr_popupBackground')).setScale(0.45);
     const label = this.add.text(0, 0, text, {
       fontFamily: 'Trebuchet MS',
@@ -255,6 +281,130 @@ export class GameScene extends Phaser.Scene {
       hold: 600,
       onComplete: () => banner.destroy()
     });
+  }
+
+  private updateCamera(): void {
+    const camera = this.cameras.main;
+    const height = this.scale.height;
+    let targetScrollY = 0;
+
+    if (this.hook.state === 'diving' || this.hook.state === 'rising') {
+      targetScrollY = Phaser.Math.Clamp(this.hook.y - height * 0.35, 0, this.worldHeight - height);
+    }
+
+    camera.scrollY = Phaser.Math.Linear(camera.scrollY, targetScrollY, 0.08);
+  }
+
+  private createHud(): void {
+    const { width } = this.scale;
+    const hudDepth = 2000;
+
+    const topLine = this.add
+      .tileSprite(width / 2, 20, width, 11, AssetKeys.atlases.main, getFirstFrame('spr_upperline2'))
+      .setScrollFactor(0)
+      .setDepth(hudDepth);
+
+    const coinBg = this.add.image(90, 60, AssetKeys.atlases.main, getFirstFrame('spr_coinBg'))
+      .setScale(0.85)
+      .setScrollFactor(0)
+      .setDepth(hudDepth);
+    this.add.image(coinBg.x - 48, coinBg.y, AssetKeys.atlases.main, getFirstFrame('spr_coin'))
+      .setScale(0.8)
+      .setScrollFactor(0)
+      .setDepth(hudDepth + 1);
+    this.coinText = this.add.text(coinBg.x - 12, coinBg.y, '$0', {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '18px',
+      color: '#0f172a'
+    }).setOrigin(0, 0.5).setScrollFactor(0).setDepth(hudDepth + 1);
+
+    const depthFrames = getFrames('spr_levelBar');
+    const depthBgFrame = depthFrames[0] ?? getFirstFrame('spr_levelBar');
+    const depthFillFrame = depthFrames[1] ?? depthBgFrame;
+    const depthBg = this.add.image(width / 2, 60, AssetKeys.atlases.main, depthBgFrame)
+      .setScale(0.9)
+      .setScrollFactor(0)
+      .setDepth(hudDepth);
+    this.depthFill = this.add.image(depthBg.x, depthBg.y, AssetKeys.atlases.main, depthFillFrame)
+      .setScale(0.9)
+      .setScrollFactor(0)
+      .setDepth(hudDepth + 1);
+    this.depthMask = this.add.graphics().setVisible(false).setScrollFactor(0);
+    this.depthFill.setMask(this.depthMask.createGeometryMask());
+    this.depthText = this.add.text(depthBg.x, depthBg.y, `0${t('Depth_upgrade_meters_small', 'm')}`, {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '18px',
+      color: '#0f172a'
+    }).setOrigin(0.5).setScrollFactor(0).setDepth(hudDepth + 2);
+
+    const energyFrames = getFrames('spr_energyBar');
+    const energyBgFrame = energyFrames[0] ?? getFirstFrame('spr_energyBar');
+    const energyFillFrame = energyFrames[1] ?? energyBgFrame;
+    const energyBg = this.add.image(width - 90, 60, AssetKeys.atlases.main, energyBgFrame)
+      .setScale(0.95)
+      .setScrollFactor(0)
+      .setDepth(hudDepth);
+    this.energyFill = this.add.image(energyBg.x, energyBg.y, AssetKeys.atlases.main, energyFillFrame)
+      .setScale(0.95)
+      .setScrollFactor(0)
+      .setDepth(hudDepth + 1);
+    this.energyMask = this.add.graphics().setVisible(false).setScrollFactor(0);
+    this.energyFill.setMask(this.energyMask.createGeometryMask());
+    this.energySpark = this.add.image(energyBg.x + energyBg.displayWidth / 2 - 8, energyBg.y, AssetKeys.atlases.main, getFirstFrame('spr_energySpark'))
+      .setScale(0.9)
+      .setScrollFactor(0)
+      .setDepth(hudDepth + 2);
+
+    topLine.setDepth(hudDepth + 3);
+  }
+
+  private updateHud(): void {
+    if (this.wave) {
+      this.wave.tilePositionX += 0.2;
+    }
+
+    if (this.coinText) {
+      this.coinText.setText(`$${saveManager.data.coins}`);
+    }
+
+    if (this.energyFill && this.energyMask) {
+      const ratio = Phaser.Math.Clamp(saveManager.data.energy / ENERGY_CONFIG.maxEnergy, 0, 1);
+      const width = this.energyFill.displayWidth;
+      const height = this.energyFill.displayHeight;
+      const left = this.energyFill.x - width / 2;
+      const top = this.energyFill.y - height / 2;
+      this.energyMask.clear();
+      this.energyMask.fillStyle(0xffffff, 1);
+      this.energyMask.fillRect(left, top, width * ratio, height);
+
+      if (this.energySpark) {
+        this.energySpark.x = left + width * ratio;
+        this.energySpark.setVisible(ratio > 0);
+      }
+    }
+
+    if (this.depthFill && this.depthMask && this.depthText) {
+      const maxDepth = Math.max(1, this.hook.maxDepthY - PHYSICS.waterSurfaceY);
+      const currentDepth = Math.max(0, this.hook.y - PHYSICS.waterSurfaceY);
+      const ratio = Phaser.Math.Clamp(currentDepth / maxDepth, 0, 1);
+      const width = this.depthFill.displayWidth;
+      const height = this.depthFill.displayHeight;
+      const left = this.depthFill.x - width / 2;
+      const top = this.depthFill.y - height / 2;
+      this.depthMask.clear();
+      this.depthMask.fillStyle(0xffffff, 1);
+      this.depthMask.fillRect(left, top, width * ratio, height);
+
+      const depthUnits = currentDepth / PHYSICS.depthUnitPixels;
+      this.depthText.setText(`${Math.floor(depthUnits)}${t('Depth_upgrade_meters_small', 'm')}`);
+    }
+  }
+
+  private updateRope(): void {
+    if (!this.rope) return;
+    const ropeLength = Math.max(0, this.hook.y - PHYSICS.waterSurfaceY);
+    this.rope.setPosition(this.hook.x, PHYSICS.waterSurfaceY);
+    this.rope.setDisplaySize(ropeLength, 9);
   }
 
 }
