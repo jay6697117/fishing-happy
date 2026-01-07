@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "spriteId": 198,
+    "spriteName": "spr_hook2",
+    "price": 0,
+    "xCatch": 0,
+    "yCatch": 215,
+    "sizeY": 220,
+    "hookObject": 67
+  },
+  {
+    "id": 2,
+    "spriteId": 199,
+    "spriteName": "spr_hook3",
+    "price": 0,
+    "xCatch": 30,
+    "yCatch": 215,
+    "sizeY": 220,
+    "hookObject": 67
+  },
+  {
+    "id": 3,
+    "spriteId": 200,
+    "spriteName": "spr_hook4",
+    "price": 0,
+    "xCatch": 0,
+    "yCatch": 215,
+    "sizeY": 220,
+    "hookObject": 67
+  },
+  {
+    "id": 4,
+    "spriteId": 196,
+    "spriteName": "spr_hook5",
+    "price": 0,
+    "xCatch": 0,
+    "yCatch": 200,
+    "sizeY": 220,
+    "hookObject": 67
+  },
+  {
+    "id": 5,
+    "spriteId": 191,
+    "spriteName": "spr_hook11",
+    "price": 0,
+    "xCatch": 0,
+    "yCatch": 133,
+    "sizeY": 150,
+    "hookObject": 67
+  }
+]
