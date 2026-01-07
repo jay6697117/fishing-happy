@@ -22,14 +22,22 @@ export class GameScene extends Phaser.Scene {
   private treasureCaught = false;
   private worldHeight = 0;
   private wave?: Phaser.GameObjects.TileSprite;
+  private waterLine?: Phaser.GameObjects.TileSprite;
   private rope?: Phaser.GameObjects.Image;
   private topSurface?: Phaser.GameObjects.Container;
   private topDecor?: Phaser.GameObjects.Container;
+  private topDecorBaseY = 0;
+  private fishCountContainer?: Phaser.GameObjects.Container;
   private fishCountIcon?: Phaser.GameObjects.Image;
   private fishCountText?: Phaser.GameObjects.Text;
   private fishCountBg?: Phaser.GameObjects.Image;
   private fishCountFill?: Phaser.GameObjects.Image;
   private fishCountMask?: Phaser.GameObjects.Graphics;
+  private fishCountTween?: Phaser.Tweens.Tween;
+  private fishCountProgress = 0;
+  private waveFrames: string[] = [];
+  private waveFramesIndex = 0;
+  private waveFrameTimer = 0;
   private coinText?: Phaser.GameObjects.Text;
   private depthText?: Phaser.GameObjects.Text;
   private energyFill?: Phaser.GameObjects.Image;
@@ -56,10 +64,14 @@ export class GameScene extends Phaser.Scene {
 
     this.fishGroup = this.physics.add.group();
 
-    const waveFrame = getFirstFrame('spr_wave');
+    this.waveFrames = getFrames('spr_wave');
+    const waveFrame = this.waveFrames[0] ?? getFirstFrame('spr_wave');
     this.wave = this.add
-      .tileSprite(width / 2, PHYSICS.waterSurfaceY + 60, width, 160, AssetKeys.atlases.main, waveFrame)
+      .tileSprite(width / 2, PHYSICS.waterSurfaceY + 60, width, 190, AssetKeys.atlases.main, waveFrame)
       .setDepth(4);
+    this.waterLine = this.add
+      .tileSprite(width / 2, PHYSICS.waterSurfaceY + 6, width, 11, AssetKeys.atlases.main, getFirstFrame('spr_upperline2'))
+      .setDepth(5);
 
     const hookData = getHookById(saveManager.data.hookChosenId) ?? getHookById(1);
     const hookFrame = hookData ? getFirstFrame(hookData.spriteName) : 'unknown';
@@ -95,6 +107,7 @@ export class GameScene extends Phaser.Scene {
       target.setVelocity(0, 0);
       target.setDepth(15);
       this.hook.attachFish(target);
+      this.pulseFishCount();
       if (target.data.type === 2 || target.data.type === 3) {
         this.showRarityBanner(target.data.type);
       }
@@ -115,6 +128,15 @@ export class GameScene extends Phaser.Scene {
     this.updateCamera();
     this.updateRope();
     this.updateHud();
+
+    if (this.wave && this.waveFrames.length > 1) {
+      this.waveFrameTimer += delta;
+      if (this.waveFrameTimer >= 700) {
+        this.waveFrameTimer = 0;
+        this.waveFramesIndex = (this.waveFramesIndex + 1) % this.waveFrames.length;
+        this.wave.setFrame(this.waveFrames[this.waveFramesIndex]);
+      }
+    }
 
     this.energyTimer += delta;
     if (this.energyTimer >= 1000) {
@@ -308,9 +330,10 @@ export class GameScene extends Phaser.Scene {
     const { width } = this.scale;
     const surfaceY = PHYSICS.waterSurfaceY;
 
-    const topSurface = this.add.container(width / 2, surfaceY - 40).setDepth(6);
+    const topSurface = this.add.container(width / 2, surfaceY).setDepth(6);
     const plank = this.add.image(0, 0, AssetKeys.atlases.main, getFirstFrame('spr_upperPlank'));
     plank.setScale(width / plank.width, 1.1);
+    topSurface.y = surfaceY - plank.displayHeight / 2 + 10;
 
     const line = this.add.tileSprite(0, -plank.displayHeight / 2 + 18, width, 23, AssetKeys.atlases.main, getFirstFrame('spr_upperLine'));
     line.setCrop(0, 0, line.displayWidth, 23);
@@ -348,23 +371,28 @@ export class GameScene extends Phaser.Scene {
     this.energySpark = this.add.image(energyBg.x + energyBg.displayWidth / 2 - 8, energyBg.y, AssetKeys.atlases.main, getFirstFrame('spr_energySpark'))
       .setScale(0.9);
 
-    const fishCountBg = this.add.image(width * 0.42, -6, AssetKeys.atlases.main, getFirstFrame('spr_levelIconBG'));
+    const fishCountContainer = this.add.container(width * 0.42, -6);
+    const fishCountBg = this.add.image(0, 0, AssetKeys.atlases.main, getFirstFrame('spr_levelIconBG'));
     fishCountBg.setScale(0.72);
-    const fishCountFill = this.add.image(fishCountBg.x, fishCountBg.y, AssetKeys.atlases.main, getFrames('spr_levBar')[1] ?? getFirstFrame('spr_levBar'));
+    const fishCountFill = this.add.image(0, 0, AssetKeys.atlases.main, getFrames('spr_levBar')[1] ?? getFirstFrame('spr_levBar'));
     fishCountFill.setScale(1.2, 1.1);
-    this.fishCountMask = this.add.graphics().setVisible(false);
-    fishCountFill.setMask(this.fishCountMask.createGeometryMask());
-    const fishCountIcon = this.add.image(fishCountBg.x, fishCountBg.y - 24, AssetKeys.atlases.main, getFirstFrame('spr_fishes_icon'));
+    const fishCountMask = this.add.graphics().setVisible(false);
+    fishCountContainer.add(fishCountMask);
+    fishCountFill.setMask(fishCountMask.createGeometryMask());
+    const fishCountIcon = this.add.image(0, -24, AssetKeys.atlases.main, getFirstFrame('spr_fishes_icon'));
     fishCountIcon.setScale(0.42);
-    const fishCountText = this.add.text(fishCountBg.x, fishCountBg.y + 22, '0/0', {
+    const fishCountText = this.add.text(0, 22, 'x0', {
       fontFamily: 'Trebuchet MS',
       fontSize: '16px',
       color: '#0f172a'
     }).setOrigin(0.5);
+    fishCountContainer.add([fishCountBg, fishCountFill, fishCountIcon, fishCountText]);
+    this.fishCountContainer = fishCountContainer;
     this.fishCountBg = fishCountBg;
     this.fishCountFill = fishCountFill;
     this.fishCountIcon = fishCountIcon;
     this.fishCountText = fishCountText;
+    this.fishCountMask = fishCountMask;
 
     topSurface.add([
       plank,
@@ -378,20 +406,18 @@ export class GameScene extends Phaser.Scene {
       energyBg,
       this.energyFill,
       this.energySpark,
-      fishCountBg,
-      fishCountFill,
-      fishCountIcon,
-      fishCountText
+      fishCountContainer
     ]);
     this.topSurface = topSurface;
 
-    const decor = this.add.container(0, surfaceY - 70).setDepth(7);
-    const fisherman = this.add.image(width * 0.25, 0, AssetKeys.atlases.main, getFirstFrame('spr_fisherman'));
+    const decor = this.add.container(width / 2, topSurface.y - 22).setDepth(7);
+    const fisherman = this.add.image(-width * 0.22, 0, AssetKeys.atlases.main, getFirstFrame('spr_fisherman'));
     fisherman.setScale(0.6).setOrigin(0.5, 1);
-    const hand = this.add.image(width * 0.35, -40, AssetKeys.atlases.main, getFirstFrame('spr_fisherhand'));
+    const hand = this.add.image(-width * 0.05, -42, AssetKeys.atlases.main, getFirstFrame('spr_fisherhand'));
     hand.setScale(0.65).setOrigin(0.5, 1);
     decor.add([fisherman, hand]);
     this.topDecor = decor;
+    this.topDecorBaseY = decor.y;
   }
 
   private createHud(): void {
@@ -405,20 +431,25 @@ export class GameScene extends Phaser.Scene {
       this.wave.tilePositionX += 0.2;
     }
 
+    if (this.waterLine) {
+      this.waterLine.tilePositionX += 0.35;
+    }
+
     if (this.coinText) {
       this.coinText.setText(`$${saveManager.data.coins}`);
     }
 
     if (this.fishCountText) {
       const current = this.hook.caughtFish.length;
-      const max = this.hook.maxFishes;
-      this.fishCountText.setText(`${current}/${max}`);
+      this.fishCountText.setText(`x${current}`);
     }
 
     if (this.fishCountFill && this.fishCountMask) {
       const current = this.hook.caughtFish.length;
       const max = Math.max(1, this.hook.maxFishes);
-      const ratio = Phaser.Math.Clamp(current / max, 0, 1);
+      const targetRatio = current / max;
+      this.fishCountProgress = Phaser.Math.Linear(this.fishCountProgress, targetRatio, 0.2);
+      const ratio = Phaser.Math.Clamp(this.fishCountProgress, 0, 1);
       const width = this.fishCountFill.displayWidth;
       const height = this.fishCountFill.displayHeight;
       const left = this.fishCountFill.x - width / 2;
@@ -462,8 +493,21 @@ export class GameScene extends Phaser.Scene {
 
     if (this.topDecor) {
       const bob = Math.sin(this.time.now / 600) * 2;
-      this.topDecor.y = PHYSICS.waterSurfaceY - 70 + bob;
+      this.topDecor.y = this.topDecorBaseY + bob;
     }
+  }
+
+  private pulseFishCount(): void {
+    if (!this.fishCountContainer) return;
+    this.fishCountTween?.stop();
+    this.fishCountContainer.setScale(1);
+    this.fishCountTween = this.tweens.add({
+      targets: this.fishCountContainer,
+      scale: 1.12,
+      duration: 120,
+      yoyo: true,
+      ease: 'Sine.Out'
+    });
   }
 
   private updateRope(): void {
