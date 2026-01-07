@@ -39,7 +39,7 @@ export const PHYSICS = {
   hookRiseSpeed: 880,
   hookMoveSpeed: 220,
   depthUnitPixels: 1100,
-  waterSurfaceY: 280
+  waterSurfaceY: 360
 };
 
 export const GAMEPLAY = {

@@ -16,14 +16,14 @@ import { GAMEPLAY } from '@/config/GameConstants';
 export const gameConfig: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'game-container',
-  width: 720,
-  height: 1280,
+  width: 1280,
+  height: 720,
   backgroundColor: '#87CEEB',
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    min: { width: 360, height: 640 },
-    max: { width: 1440, height: 2560 }
+    min: { width: 640, height: 360 },
+    max: { width: 1920, height: 1080 }
   },
   physics: {
     default: 'arcade',

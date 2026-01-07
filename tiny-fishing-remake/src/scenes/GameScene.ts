@@ -23,6 +23,13 @@ export class GameScene extends Phaser.Scene {
   private worldHeight = 0;
   private wave?: Phaser.GameObjects.TileSprite;
   private rope?: Phaser.GameObjects.Image;
+  private topSurface?: Phaser.GameObjects.Container;
+  private topDecor?: Phaser.GameObjects.Container;
+  private fishCountIcon?: Phaser.GameObjects.Image;
+  private fishCountText?: Phaser.GameObjects.Text;
+  private fishCountBg?: Phaser.GameObjects.Image;
+  private fishCountFill?: Phaser.GameObjects.Image;
+  private fishCountMask?: Phaser.GameObjects.Graphics;
   private coinText?: Phaser.GameObjects.Text;
   private depthText?: Phaser.GameObjects.Text;
   private energyFill?: Phaser.GameObjects.Image;
@@ -44,6 +51,8 @@ export class GameScene extends Phaser.Scene {
     this.add.image(width / 2, this.worldHeight / 2, AssetKeys.images.background).setDisplaySize(width, this.worldHeight);
     this.physics.world.setBounds(0, 0, width, this.worldHeight);
     this.cameras.main.setBounds(0, 0, width, this.worldHeight);
+
+    this.createSurfaceScene();
 
     this.fishGroup = this.physics.add.group();
 
@@ -295,67 +304,100 @@ export class GameScene extends Phaser.Scene {
     camera.scrollY = Phaser.Math.Linear(camera.scrollY, targetScrollY, 0.08);
   }
 
-  private createHud(): void {
+  private createSurfaceScene(): void {
     const { width } = this.scale;
-    const hudDepth = 2000;
+    const surfaceY = PHYSICS.waterSurfaceY;
 
-    const topLine = this.add
-      .tileSprite(width / 2, 20, width, 11, AssetKeys.atlases.main, getFirstFrame('spr_upperline2'))
-      .setScrollFactor(0)
-      .setDepth(hudDepth);
+    const topSurface = this.add.container(width / 2, surfaceY - 40).setDepth(6);
+    const plank = this.add.image(0, 0, AssetKeys.atlases.main, getFirstFrame('spr_upperPlank'));
+    plank.setScale(width / plank.width, 1.1);
 
-    const coinBg = this.add.image(90, 60, AssetKeys.atlases.main, getFirstFrame('spr_coinBg'))
-      .setScale(0.85)
-      .setScrollFactor(0)
-      .setDepth(hudDepth);
-    this.add.image(coinBg.x - 48, coinBg.y, AssetKeys.atlases.main, getFirstFrame('spr_coin'))
-      .setScale(0.8)
-      .setScrollFactor(0)
-      .setDepth(hudDepth + 1);
-    this.coinText = this.add.text(coinBg.x - 12, coinBg.y, '$0', {
+    const line = this.add.tileSprite(0, -plank.displayHeight / 2 + 18, width, 23, AssetKeys.atlases.main, getFirstFrame('spr_upperLine'));
+    line.setCrop(0, 0, line.displayWidth, 23);
+
+    const moneyBg = this.add.image(-width * 0.32, -2, AssetKeys.atlases.main, getFirstFrame('spr_upperMoney'));
+    moneyBg.setScale(0.78);
+    const moneyIcon = this.add.image(moneyBg.x - 70, moneyBg.y + 4, AssetKeys.atlases.main, getFirstFrame('spr_coin'));
+    moneyIcon.setScale(0.8);
+    const moneyText = this.add.text(moneyBg.x - 20, moneyBg.y + 2, '$0', {
       fontFamily: 'Trebuchet MS',
       fontSize: '18px',
       color: '#0f172a'
-    }).setOrigin(0, 0.5).setScrollFactor(0).setDepth(hudDepth + 1);
+    }).setOrigin(0, 0.5);
+    this.coinText = moneyText;
 
-    const depthFrames = getFrames('spr_levelBar');
-    const depthBgFrame = depthFrames[0] ?? getFirstFrame('spr_levelBar');
-    const depthFillFrame = depthFrames[1] ?? depthBgFrame;
-    const depthBg = this.add.image(width / 2, 60, AssetKeys.atlases.main, depthBgFrame)
-      .setScale(0.9)
-      .setScrollFactor(0)
-      .setDepth(hudDepth);
-    this.depthFill = this.add.image(depthBg.x, depthBg.y, AssetKeys.atlases.main, depthFillFrame)
-      .setScale(0.9)
-      .setScrollFactor(0)
-      .setDepth(hudDepth + 1);
-    this.depthMask = this.add.graphics().setVisible(false).setScrollFactor(0);
+    const depthBgFrame = getFrames('spr_levelBar')[0] ?? getFirstFrame('spr_levelBar');
+    const depthFillFrame = getFrames('spr_levelBar')[1] ?? depthBgFrame;
+    const depthBg = this.add.image(0, -2, AssetKeys.atlases.main, depthBgFrame).setScale(0.85);
+    this.depthFill = this.add.image(depthBg.x, depthBg.y, AssetKeys.atlases.main, depthFillFrame).setScale(0.85);
+    this.depthMask = this.add.graphics().setVisible(false);
     this.depthFill.setMask(this.depthMask.createGeometryMask());
-    this.depthText = this.add.text(depthBg.x, depthBg.y, `0${t('Depth_upgrade_meters_small', 'm')}`, {
+    this.depthText = this.add.text(depthBg.x, depthBg.y + 1, `0${t('Depth_upgrade_meters_small', 'm')}`, {
       fontFamily: 'Trebuchet MS',
       fontSize: '18px',
       color: '#0f172a'
-    }).setOrigin(0.5).setScrollFactor(0).setDepth(hudDepth + 2);
+    }).setOrigin(0.5);
 
     const energyFrames = getFrames('spr_energyBar');
     const energyBgFrame = energyFrames[0] ?? getFirstFrame('spr_energyBar');
     const energyFillFrame = energyFrames[1] ?? energyBgFrame;
-    const energyBg = this.add.image(width - 90, 60, AssetKeys.atlases.main, energyBgFrame)
-      .setScale(0.95)
-      .setScrollFactor(0)
-      .setDepth(hudDepth);
-    this.energyFill = this.add.image(energyBg.x, energyBg.y, AssetKeys.atlases.main, energyFillFrame)
-      .setScale(0.95)
-      .setScrollFactor(0)
-      .setDepth(hudDepth + 1);
-    this.energyMask = this.add.graphics().setVisible(false).setScrollFactor(0);
+    const energyBg = this.add.image(width * 0.32, -2, AssetKeys.atlases.main, energyBgFrame).setScale(0.95);
+    this.energyFill = this.add.image(energyBg.x, energyBg.y, AssetKeys.atlases.main, energyFillFrame).setScale(0.95);
+    this.energyMask = this.add.graphics().setVisible(false);
     this.energyFill.setMask(this.energyMask.createGeometryMask());
     this.energySpark = this.add.image(energyBg.x + energyBg.displayWidth / 2 - 8, energyBg.y, AssetKeys.atlases.main, getFirstFrame('spr_energySpark'))
-      .setScale(0.9)
-      .setScrollFactor(0)
-      .setDepth(hudDepth + 2);
+      .setScale(0.9);
 
-    topLine.setDepth(hudDepth + 3);
+    const fishCountBg = this.add.image(width * 0.42, -6, AssetKeys.atlases.main, getFirstFrame('spr_levelIconBG'));
+    fishCountBg.setScale(0.72);
+    const fishCountFill = this.add.image(fishCountBg.x, fishCountBg.y, AssetKeys.atlases.main, getFrames('spr_levBar')[1] ?? getFirstFrame('spr_levBar'));
+    fishCountFill.setScale(1.2, 1.1);
+    this.fishCountMask = this.add.graphics().setVisible(false);
+    fishCountFill.setMask(this.fishCountMask.createGeometryMask());
+    const fishCountIcon = this.add.image(fishCountBg.x, fishCountBg.y - 24, AssetKeys.atlases.main, getFirstFrame('spr_fishes_icon'));
+    fishCountIcon.setScale(0.42);
+    const fishCountText = this.add.text(fishCountBg.x, fishCountBg.y + 22, '0/0', {
+      fontFamily: 'Trebuchet MS',
+      fontSize: '16px',
+      color: '#0f172a'
+    }).setOrigin(0.5);
+    this.fishCountBg = fishCountBg;
+    this.fishCountFill = fishCountFill;
+    this.fishCountIcon = fishCountIcon;
+    this.fishCountText = fishCountText;
+
+    topSurface.add([
+      plank,
+      line,
+      moneyBg,
+      moneyIcon,
+      moneyText,
+      depthBg,
+      this.depthFill,
+      this.depthText,
+      energyBg,
+      this.energyFill,
+      this.energySpark,
+      fishCountBg,
+      fishCountFill,
+      fishCountIcon,
+      fishCountText
+    ]);
+    this.topSurface = topSurface;
+
+    const decor = this.add.container(0, surfaceY - 70).setDepth(7);
+    const fisherman = this.add.image(width * 0.25, 0, AssetKeys.atlases.main, getFirstFrame('spr_fisherman'));
+    fisherman.setScale(0.6).setOrigin(0.5, 1);
+    const hand = this.add.image(width * 0.35, -40, AssetKeys.atlases.main, getFirstFrame('spr_fisherhand'));
+    hand.setScale(0.65).setOrigin(0.5, 1);
+    decor.add([fisherman, hand]);
+    this.topDecor = decor;
+  }
+
+  private createHud(): void {
+    const hudDepth = 2000;
+    this.topSurface?.setScrollFactor(0).setDepth(hudDepth);
+    this.topDecor?.setScrollFactor(0).setDepth(hudDepth + 1);
   }
 
   private updateHud(): void {
@@ -365,6 +407,25 @@ export class GameScene extends Phaser.Scene {
 
     if (this.coinText) {
       this.coinText.setText(`$${saveManager.data.coins}`);
+    }
+
+    if (this.fishCountText) {
+      const current = this.hook.caughtFish.length;
+      const max = this.hook.maxFishes;
+      this.fishCountText.setText(`${current}/${max}`);
+    }
+
+    if (this.fishCountFill && this.fishCountMask) {
+      const current = this.hook.caughtFish.length;
+      const max = Math.max(1, this.hook.maxFishes);
+      const ratio = Phaser.Math.Clamp(current / max, 0, 1);
+      const width = this.fishCountFill.displayWidth;
+      const height = this.fishCountFill.displayHeight;
+      const left = this.fishCountFill.x - width / 2;
+      const top = this.fishCountFill.y - height / 2;
+      this.fishCountMask.clear();
+      this.fishCountMask.fillStyle(0xffffff, 1);
+      this.fishCountMask.fillRect(left, top, width * ratio, height);
     }
 
     if (this.energyFill && this.energyMask) {
@@ -397,6 +458,11 @@ export class GameScene extends Phaser.Scene {
 
       const depthUnits = currentDepth / PHYSICS.depthUnitPixels;
       this.depthText.setText(`${Math.floor(depthUnits)}${t('Depth_upgrade_meters_small', 'm')}`);
+    }
+
+    if (this.topDecor) {
+      const bob = Math.sin(this.time.now / 600) * 2;
+      this.topDecor.y = PHYSICS.waterSurfaceY - 70 + bob;
     }
   }
 
